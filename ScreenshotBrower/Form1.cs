@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.Devices;
 
 
 namespace ScreenshotBrower
@@ -25,7 +26,7 @@ namespace ScreenshotBrower
             InitializeComponent();
 
             this.Text += " v" + this.ProductVersion.ToLower();
-            lb_computerInfo.Text = $"{lb_computerInfo.Text}：{Screen.PrimaryScreen.Bounds.Width}*{Screen.PrimaryScreen.Bounds.Height}";
+            lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
 
         }
 
@@ -110,7 +111,7 @@ namespace ScreenshotBrower
                     await page.GoToAsync(navurl.ToString());
                     var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
                     await page.PdfAsync(invoicename, new PdfOptions()
-                    {                        
+                    {
                         Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
                         Width = 800// Screen.PrimaryScreen.WorkingArea.Width
 
@@ -122,6 +123,7 @@ namespace ScreenshotBrower
                 this.Invoke(new MethodInvoker(() =>
                 {
                     toolStripStatusLabel1.Text = $"全部生成完毕";
+                    MessageBox.Show("当前操作已经执行完成", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }));
             });
 
@@ -255,7 +257,12 @@ namespace ScreenshotBrower
                 tb_num.Maximum = orderList.Orders.Count();
                 tb_num.Enabled = true;
                 lb_num.Text = $"{tb_num.Value}/{tb_num.Maximum}";
+                toolStripStatusLabel1.Text = "获取订单数量完毕，最大可截图数量为：" + tb_num.Maximum;
 
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = "获取订单数量异常，请检查是否生成";
             }
         }
 
