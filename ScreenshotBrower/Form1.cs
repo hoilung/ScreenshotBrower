@@ -27,6 +27,7 @@ namespace ScreenshotBrower
 
             this.Text += " v" + this.ProductVersion.ToLower();
             lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
+            tbx_path.Focus();
 
         }
 
@@ -140,7 +141,7 @@ namespace ScreenshotBrower
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir,"提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }));
@@ -180,7 +181,7 @@ namespace ScreenshotBrower
             //合并文字到订单头
             // var newimage = Properties.Resources.detail_head;
             var newhead = Graphics.FromImage(sourceImage);
-            newhead.DrawImage(bmptext, new Rectangle(180, 30, bmptext.Width, bmptext.Height));
+            newhead.DrawImage(bmptext, new Rectangle(180, 32, bmptext.Width, bmptext.Height));
             return sourceImage;
         }
 
@@ -254,7 +255,7 @@ namespace ScreenshotBrower
         private void btn_order_Click(object sender, EventArgs e)
         {
 
-            if (!tbx_order.Text.StartsWith("http"))
+            if (!tbx_order.Text.StartsWith("http://") || tbx_order.Text.IndexOf(".") < 0)
             {
                 MessageBox.Show("请输入正常可访问的订单列表地址", "提示");
                 return;
@@ -269,7 +270,7 @@ namespace ScreenshotBrower
             if (resp.IsSuccessful)
             {
                 orderList = new OdrderList();
-                orderList.OrderLink = client.BaseUrl.ToString();
+                orderList.OrderLink = $"{client.BaseUrl.Scheme}://{client.BaseUrl.Host}";
                 orderList.OrderHtml = resp.Content;
                 orderList.OrderPase();
 
