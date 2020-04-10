@@ -58,6 +58,8 @@ namespace ScreenshotBrower
 
                 this.Invoke(new MethodInvoker(() =>
                 {
+                    toolStripProgressBar1.Value = 0;
+                    toolStripProgressBar1.Maximum = taskMax;
                     toolStripStatusLabel1.Text = "正在生成列表截图";
                 }));
                 //列表
@@ -74,48 +76,55 @@ namespace ScreenshotBrower
                     this.MergeImage(Properties.Resources.list_head, listiamge, listname);
                 };
 
-
-                for (int i = 0; i < orderList.Orders.OrderBy(m => Guid.NewGuid()).ToList().Count; i++)
+                var domainUrl = orderList.OrderLink;
+                var topList = orderList.Orders.OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList();
+                for (int i = 0; i < topList.Count; i++)
                 {
-                    if (i >= taskMax)
-                        break;
 
-                    this.Invoke(new MethodInvoker(() =>
+                    try
                     {
-                        toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单详情截图";
-                        toolStripProgressBar1.PerformStep();
-                    }));
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单详情截图";
+                            toolStripProgressBar1.PerformStep();
+                        }));
 
-                    OrderModel item = orderList.Orders[i];
-                    var navurl = new Uri(orderList.OrderLink + item.DetailLink);
-                    await page.GoToAsync(navurl.ToString());
-                    var detailname = newdir + $"/detail-{item.DetailNum}.png";
-                    using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
-                    {
-                        FullPage = true,
-                        Type = ScreenshotType.Png
-                    }))
-                    {
-                        var detailimage = Image.FromStream(detailstream);
-                        //重写头
-                        var detailheaderImage = this.ReWirteImage(Properties.Resources.detail_head, item.DetailNumLink);
-                        //合并文件
-                        MergeImage(detailheaderImage, detailimage, detailname);
+                        OrderModel item = topList[i];
+                        var navurl = new Uri(domainUrl + item.DetailLink);
+                        await page.GoToAsync(navurl.ToString());
+                        var detailname = newdir + $"/detail-{item.DetailNum}.png";
+                        using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                        {
+                            FullPage = true,
+                            Type = ScreenshotType.Png
+                        }))
+                        {
+                            var detailimage = Image.FromStream(detailstream);
+                            //重写头
+                            var detailheaderImage = this.ReWirteImage(Properties.Resources.detail_head, item.DetailNumLink);
+                            //合并文件
+                            MergeImage(detailheaderImage, detailimage, detailname);
+                        }
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单发票截图";
+                        }));
+
+                        navurl = new Uri(domainUrl + item.InvoiceLink);
+                        await page.GoToAsync(navurl.ToString());
+                        var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
+                        await page.PdfAsync(invoicename, new PdfOptions()
+                        {
+                            Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
+                            Width = 800// Screen.PrimaryScreen.WorkingArea.Width
+
+                        }); ;
                     }
-                    this.Invoke(new MethodInvoker(() =>
+                    catch (Exception ex)
                     {
-                        toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单发票截图";
-                    }));
-
-                    navurl = new Uri(orderList.OrderLink + item.InvoiceLink);
-                    await page.GoToAsync(navurl.ToString());
-                    var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
-                    await page.PdfAsync(invoicename, new PdfOptions()
-                    {
-                        Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
-                        Width = 800// Screen.PrimaryScreen.WorkingArea.Width
-
-                    }); ;
+                        MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    }
 
                 }
 
@@ -123,7 +132,17 @@ namespace ScreenshotBrower
                 this.Invoke(new MethodInvoker(() =>
                 {
                     toolStripStatusLabel1.Text = $"全部生成完毕";
-                    MessageBox.Show("当前操作已经执行完成", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+                    {
+                        try
+                        {
+                            Process.Start("explorer.exe", newdir);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir,"提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
                 }));
             });
 
