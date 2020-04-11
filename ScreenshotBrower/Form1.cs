@@ -29,6 +29,7 @@ namespace ScreenshotBrower
             lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
             tbx_path.Focus();
 
+
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
@@ -37,6 +38,19 @@ namespace ScreenshotBrower
             var taskMax = tb_num.Value;
             Task.Run(async () =>
             {
+
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text = "初始化插件";
+                }));
+                await new BrowserFetcher(new BrowserFetcherOptions()
+                {
+                    Host = "http://cdn.npm.taobao.org/dist"
+                }).DownloadAsync(BrowserFetcher.DefaultRevision);
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text = "初始化浏览器";
+                }));
                 var browser = await Puppeteer.LaunchAsync(new LaunchOptions
                 {
                     UserDataDir = $"{System.IO.Directory.GetCurrentDirectory()}/UserData",
@@ -45,7 +59,6 @@ namespace ScreenshotBrower
 
                 });
 
-
                 var page = await browser.NewPageAsync();
 
                 await page.SetViewportAsync(new ViewPortOptions
@@ -53,6 +66,10 @@ namespace ScreenshotBrower
                     Width = Screen.PrimaryScreen.WorkingArea.Width,
                     Height = Screen.PrimaryScreen.WorkingArea.Height
                 });
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text = "创建新的文件目录";
+                }));
 
                 var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
                 Directory.CreateDirectory(newdir);
@@ -158,12 +175,15 @@ namespace ScreenshotBrower
         /// <param name="image2"></param>
         private void MergeImage(Image image1, Image image2, string newfilename)
         {
-            int h = image1.Height + image2.Height;
+            var image3 = ScreenBootomImage();
+
+            int h = image1.Height + image2.Height + image3.Height;
             int w = image1.Width;
             var bitmap = new Bitmap(w, h);
             Graphics gr = Graphics.FromImage(bitmap);
             gr.DrawImage(image1, new Rectangle(0, 0, image1.Width, image1.Height));
             gr.DrawImage(image2, new Rectangle(0, image1.Height, image2.Width, image2.Height));
+            gr.DrawImage(image3, new Rectangle(0, image1.Height + image2.Height, image3.Width, image3.Height));
 
             bitmap.Save(newfilename, ImageFormat.Png);
 
@@ -226,6 +246,20 @@ namespace ScreenshotBrower
             g.FillRectangle(new SolidBrush(backColor), rect);
             g.DrawString(text, font, Brushes.Black, rect, format);
             return bmp;
+        }
+
+
+        /// <summary>
+        /// 获得当前屏幕底部的图片
+        /// </summary>
+        /// <returns></returns>
+        private Image ScreenBootomImage()
+        {
+            Image baseImage = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height);
+            Graphics g = Graphics.FromImage(baseImage);
+            g.CopyFromScreen(new Point(0, Screen.PrimaryScreen.WorkingArea.Height), new Point(0, 0), Screen.AllScreens[0].Bounds.Size);
+            g.Dispose();
+            return baseImage;
         }
 
         /// <summary>
