@@ -29,7 +29,10 @@ namespace ScreenshotBrower
             lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
             tbx_path.Focus();
 
-
+            label1.DoubleClick += (s, e) =>
+            {
+                tbx_order.Text = "http://47.92.99.30/";
+            };
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
@@ -51,13 +54,35 @@ namespace ScreenshotBrower
                 {
                     toolStripStatusLabel1.Text = "初始化浏览器";
                 }));
-                var browser = await Puppeteer.LaunchAsync(new LaunchOptions
-                {
-                    UserDataDir = $"{System.IO.Directory.GetCurrentDirectory()}/UserData",
-                    Headless = true,
-                    Args = new[] { "--no-sandbox", "--disable-setuid-sandbox", "--disable-infobars" }
+                Browser browser = null;
 
-                });
+                try
+                {
+
+                    browser = await Puppeteer.LaunchAsync(new LaunchOptions
+                    {
+                        UserDataDir = $"{System.IO.Directory.GetCurrentDirectory()}/UserData",
+                        Headless = true,
+                        Args = new[] {
+                        "--no-sandbox",
+                        "--disable-setuid-sandbox",
+                    //    "--disable-dev-shm-usage",
+                     //   "--disable-extensions",
+                      //  "--disable-gpu",
+                       // "--disable-infobars",
+                       //"--disable-local-storage",
+                       // "--no-zygote",
+                       // "--disable-bundled-ppapi-flash"
+                        },
+                        IgnoreHTTPSErrors = true,
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                    //throw;
+                }
 
                 var page = await browser.NewPageAsync();
 
@@ -74,26 +99,29 @@ namespace ScreenshotBrower
                 var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
                 Directory.CreateDirectory(newdir);
 
-                this.Invoke(new MethodInvoker(() =>
+                if (cbx_list.Checked)
                 {
-                    toolStripProgressBar1.Value = 0;
-                    toolStripProgressBar1.Maximum = taskMax;
-                    toolStripStatusLabel1.Text = "正在生成列表截图";
-                }));
-                //列表
-                await page.GoToAsync(orderList.OrderLink);
-                var listname = newdir + "/list.png";
-                using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
-                {
-                    FullPage = true,
-                    Type = ScreenshotType.Png
-                }))
-                {
-                    //合并头
-                    var listiamge = Image.FromStream(liststream);
-                    this.MergeImage(Properties.Resources.list_head, listiamge, listname);
-                };
 
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripProgressBar1.Value = 0;
+                        toolStripProgressBar1.Maximum = taskMax;
+                        toolStripStatusLabel1.Text = "正在生成列表截图";
+                    }));
+                    //列表
+                    await page.GoToAsync(orderList.OrderLink);
+                    var listname = newdir + "/list.png";
+                    using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                    {
+                        FullPage = true,
+                        Type = ScreenshotType.Png
+                    }))
+                    {
+                        //合并头
+                        var listiamge = Image.FromStream(liststream);
+                        this.MergeImage(Properties.Resources.list_head, listiamge, listname);
+                    };
+                }
                 var domainUrl = orderList.OrderLink;
                 var topList = orderList.Orders.OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList();
                 for (int i = 0; i < topList.Count; i++)
@@ -123,20 +151,24 @@ namespace ScreenshotBrower
                             //合并文件
                             MergeImage(detailheaderImage, detailimage, detailname);
                         }
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单发票截图";
-                        }));
 
-                        navurl = new Uri(domainUrl + item.InvoiceLink);
-                        await page.GoToAsync(navurl.ToString());
-                        var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
-                        await page.PdfAsync(invoicename, new PdfOptions()
+                        if (cbx_invoice.Checked)
                         {
-                            Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
-                            Width = 800// Screen.PrimaryScreen.WorkingArea.Width
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                toolStripStatusLabel1.Text = $"正在生成第{(i + 1)}个订单发票截图";
+                            }));
 
-                        }); ;
+                            navurl = new Uri(domainUrl + item.InvoiceLink);
+                            await page.GoToAsync(navurl.ToString());
+                            var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
+                            await page.PdfAsync(invoicename, new PdfOptions()
+                            {
+                                Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
+                                Width = 800// Screen.PrimaryScreen.WorkingArea.Width
+
+                            });
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -178,13 +210,19 @@ namespace ScreenshotBrower
             var image3 = ScreenBootomImage();
 
             int h = image1.Height + image2.Height + image3.Height;
-            int w = image1.Width;
+            int w = image3.Width;//以当前屏幕比例制定图片宽度
             var bitmap = new Bitmap(w, h);
-            Graphics gr = Graphics.FromImage(bitmap);
-            gr.DrawImage(image1, new Rectangle(0, 0, image1.Width, image1.Height));
-            gr.DrawImage(image2, new Rectangle(0, image1.Height, image2.Width, image2.Height));
-            gr.DrawImage(image3, new Rectangle(0, image1.Height + image2.Height, image3.Width, image3.Height));
+            using (Graphics gr = Graphics.FromImage(bitmap))
+            {
+                gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
+                double ratio = (double)w / image1.Width;
+                gr.DrawImage(image1, new Rectangle(0, 0, w, Convert.ToInt32(image1.Height * ratio)), new Rectangle(0, 0, image1.Width, image1.Height), GraphicsUnit.Pixel);//自动伸缩头图
+                gr.DrawImage(image2, new Rectangle(0, Convert.ToInt32(image1.Height * ratio), image2.Width, image2.Height));
+                gr.DrawImage(image3, new Rectangle(0, image1.Height + image2.Height, image3.Width, image3.Height));
+            }
             bitmap.Save(newfilename, ImageFormat.Png);
 
 
@@ -255,9 +293,13 @@ namespace ScreenshotBrower
         /// <returns></returns>
         private Image ScreenBootomImage()
         {
+            // Graphics g1 = Graphics.FromHwnd(IntPtr.Zero);
+            // float factor = g1.DpiX / 96;
+            // Rectangle rc = new Rectangle(0, 0, (int)(Screen.PrimaryScreen.Bounds.Width * factor), (int)(Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height * factor));
+           // var s = this.CreateGraphics().DpiX;
             Image baseImage = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height);
             Graphics g = Graphics.FromImage(baseImage);
-            g.CopyFromScreen(new Point(0, Screen.PrimaryScreen.WorkingArea.Height), new Point(0, 0), Screen.AllScreens[0].Bounds.Size);
+            g.CopyFromScreen(new Point(0, Screen.PrimaryScreen.WorkingArea.Height), new Point(0, 0), Screen.PrimaryScreen.Bounds.Size);
             g.Dispose();
             return baseImage;
         }

@@ -45,6 +45,9 @@
             this.btn_path = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label3 = new System.Windows.Forms.Label();
+            this.cbx_list = new System.Windows.Forms.CheckBox();
+            this.cbx_invoice = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.SuspendLayout();
@@ -53,7 +56,7 @@
             // 
             this.btn_start.Enabled = false;
             this.btn_start.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_start.Location = new System.Drawing.Point(497, 201);
+            this.btn_start.Location = new System.Drawing.Point(497, 200);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(95, 29);
             this.btn_start.TabIndex = 6;
@@ -198,12 +201,47 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "提示：选择路径=》填写订单网址=》获取订单=》设置截图数量=》开始截图任务";
             // 
+            // cbx_list
+            // 
+            this.cbx_list.AutoSize = true;
+            this.cbx_list.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbx_list.Location = new System.Drawing.Point(141, 202);
+            this.cbx_list.Name = "cbx_list";
+            this.cbx_list.Size = new System.Drawing.Size(93, 25);
+            this.cbx_list.TabIndex = 15;
+            this.cbx_list.Text = "订单列表";
+            this.cbx_list.UseVisualStyleBackColor = true;
+            // 
+            // cbx_invoice
+            // 
+            this.cbx_invoice.AutoSize = true;
+            this.cbx_invoice.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbx_invoice.Location = new System.Drawing.Point(266, 202);
+            this.cbx_invoice.Name = "cbx_invoice";
+            this.cbx_invoice.Size = new System.Drawing.Size(61, 25);
+            this.cbx_invoice.TabIndex = 16;
+            this.cbx_invoice.Text = "发票";
+            this.cbx_invoice.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(14, 204);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(106, 21);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "截图生成选项";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(647, 356);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cbx_invoice);
+            this.Controls.Add(this.cbx_list);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btn_path);
             this.Controls.Add(this.tbx_path);
@@ -252,6 +290,9 @@
         private System.Windows.Forms.Button btn_path;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox cbx_list;
+        private System.Windows.Forms.CheckBox cbx_invoice;
+        private System.Windows.Forms.Label label5;
     }
 }
 
