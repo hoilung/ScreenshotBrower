@@ -110,7 +110,7 @@ namespace ScreenshotBrower
                     }));
                     //列表
                     await page.GoToAsync(orderList.OrderLink);
-                    var listname = newdir + "/list.png";
+                    var listname = newdir + "/list.jpg";
                     using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
                     {
                         FullPage = true,
@@ -138,7 +138,7 @@ namespace ScreenshotBrower
                         OrderModel item = topList[i];
                         var navurl = new Uri(domainUrl + item.DetailLink);
                         await page.GoToAsync(navurl.ToString());
-                        var detailname = newdir + $"/detail-{item.DetailNum}.png";
+                        var detailname = newdir + $"/detail-{item.DetailNum}.jpg";
                         using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
                         {
                             FullPage = true,
