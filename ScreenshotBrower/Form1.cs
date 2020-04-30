@@ -123,10 +123,17 @@ namespace ScreenshotBrower
                     };
                 }
                 var domainUrl = orderList.OrderLink;
-                var topList = orderList.Orders.OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList();
+                //var topList = orderList.Orders.OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList();
+                var topList = new List<OrderModel>();
+                if (taskMax > 2)
+                {
+                    topList.Add(orderList.Orders.First());
+                    topList.Add(orderList.Orders.Last());
+                    taskMax = taskMax - 2;
+                }
+                topList.AddRange(orderList.Orders.GetRange(1, orderList.Orders.Count - 1).OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList());
                 for (int i = 0; i < topList.Count; i++)
                 {
-
                     try
                     {
                         this.Invoke(new MethodInvoker(() =>
@@ -137,6 +144,11 @@ namespace ScreenshotBrower
 
                         OrderModel item = topList[i];
                         var navurl = new Uri(domainUrl + item.DetailLink);
+                        await page.SetViewportAsync(new ViewPortOptions()
+                        {
+                            Width = Screen.PrimaryScreen.WorkingArea.Width,
+                            Height = Screen.PrimaryScreen.WorkingArea.Height
+                        });
                         await page.GoToAsync(navurl.ToString());
                         var detailname = newdir + $"/detail-{item.DetailNum}.jpg";
                         using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
@@ -160,14 +172,26 @@ namespace ScreenshotBrower
                             }));
 
                             navurl = new Uri(domainUrl + item.InvoiceLink);
-                            await page.GoToAsync(navurl.ToString());
-                            var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
-                            await page.PdfAsync(invoicename, new PdfOptions()
+                            //图片大小
+                            await page.SetViewportAsync(new ViewPortOptions()
                             {
-                                Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
-                                Width = 800// Screen.PrimaryScreen.WorkingArea.Width
-
+                                Width = 1024,
+                                Height = 768
                             });
+                            await page.GoToAsync(navurl.ToString());
+                            var invoicename = newdir + $"/invoice-{item.DetailNum}.png";
+                            await page.ScreenshotAsync(invoicename, new ScreenshotOptions()
+                            {
+                                Type = ScreenshotType.Png,
+                            });
+
+                            //生成pdf
+                            //var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
+                            //await page.PdfAsync(invoicename, new PdfOptions()
+                            //{
+                            //    Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
+                            //    Width = 800// Screen.PrimaryScreen.WorkingArea.Width
+                            //});
                         }
                     }
                     catch (Exception ex)
@@ -296,7 +320,7 @@ namespace ScreenshotBrower
             // Graphics g1 = Graphics.FromHwnd(IntPtr.Zero);
             // float factor = g1.DpiX / 96;
             // Rectangle rc = new Rectangle(0, 0, (int)(Screen.PrimaryScreen.Bounds.Width * factor), (int)(Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height * factor));
-           // var s = this.CreateGraphics().DpiX;
+            // var s = this.CreateGraphics().DpiX;
             Image baseImage = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height);
             Graphics g = Graphics.FromImage(baseImage);
             g.CopyFromScreen(new Point(0, Screen.PrimaryScreen.WorkingArea.Height), new Point(0, 0), Screen.PrimaryScreen.Bounds.Size);
