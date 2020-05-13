@@ -97,6 +97,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,6 +145,9 @@
       <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
+      <Version>106.10.1</Version>
+    </PackageReference>
+    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson">
       <Version>106.10.1</Version>
     </PackageReference>
   </ItemGroup>

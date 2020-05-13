@@ -15,7 +15,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.Devices;
-
+using RestSharp.Serializers.NewtonsoftJson;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RestSharp.Serialization.Xml;
 
 namespace ScreenshotBrower
 {
@@ -26,7 +29,7 @@ namespace ScreenshotBrower
             InitializeComponent();
 
             this.Text += " v" + this.ProductVersion.ToLower();
-            lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
+            lb_computerInfo.Text = $"{lb_computerInfo.Text}{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
             tbx_path.Focus();
 
             label1.DoubleClick += (s, e) =>
@@ -296,7 +299,7 @@ namespace ScreenshotBrower
             // Graphics g1 = Graphics.FromHwnd(IntPtr.Zero);
             // float factor = g1.DpiX / 96;
             // Rectangle rc = new Rectangle(0, 0, (int)(Screen.PrimaryScreen.Bounds.Width * factor), (int)(Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height * factor));
-           // var s = this.CreateGraphics().DpiX;
+            // var s = this.CreateGraphics().DpiX;
             Image baseImage = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height);
             Graphics g = Graphics.FromImage(baseImage);
             g.CopyFromScreen(new Point(0, Screen.PrimaryScreen.WorkingArea.Height), new Point(0, 0), Screen.PrimaryScreen.Bounds.Size);
@@ -429,6 +432,73 @@ namespace ScreenshotBrower
             {
 
             }
+        }
+
+
+        private void btn_login_Click(object sender, EventArgs e)
+        {
+
+#if DEBUG
+            tbx_adminurl.Text = "http://47.92.99.30/site/login";
+            tbx_loginname.Text = "admin";
+            tbx_userpass.Text = "123456";
+#endif
+            var loginurl = tbx_adminurl.Text.Trim();
+            var username = tbx_loginname.Text.Trim();
+            var userpass = tbx_userpass.Text.Trim();
+
+            if (!loginurl.StartsWith("http:"))
+            {
+                MessageBox.Show("请正确填写后台登录地址");
+                return;
+            }
+            else if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("请正确填写后台登录账号");
+                return;
+            }
+            else if (string.IsNullOrEmpty(userpass))
+            {
+                MessageBox.Show("请正确填写后台登录密码");
+                return;
+            }
+
+            try
+            {
+
+                var client = new RestClient();
+                
+                client.UseNewtonsoftJson();
+                client.BaseUrl = new Uri(loginurl);
+                var request = new RestRequest();
+                //  request.Resource = "login";
+                request.AddHeader("Accept", "application/json");
+                //request.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.AddParameter("username", username);
+                request.AddParameter("password", userpass);
+                var resp = client.Post<Models.LoginResult>(request);
+                if (!resp.IsSuccessful)
+                {
+                    MessageBox.Show("请求无效，登录失败");
+                    return;
+                }
+                else if (resp.Content == "no")
+                {
+                    MessageBox.Show("登录失败，账号/密码 错误");
+                    return;
+                }
+
+                var login = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResult>(resp.Content);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
         }
     }
 }

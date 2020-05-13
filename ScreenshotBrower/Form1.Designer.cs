@@ -48,15 +48,33 @@
             this.cbx_list = new System.Windows.Forms.CheckBox();
             this.cbx_invoice = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbx_adminurl = new System.Windows.Forms.TextBox();
+            this.tbx_loginname = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbx_userpass = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btn_login = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_start
             // 
             this.btn_start.Enabled = false;
             this.btn_start.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_start.Location = new System.Drawing.Point(497, 200);
+            this.btn_start.Location = new System.Drawing.Point(491, 196);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(95, 29);
             this.btn_start.TabIndex = 6;
@@ -68,7 +86,7 @@
             // 
             this.tbx_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(224)))), ((int)(((byte)(247)))));
             this.tbx_order.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbx_order.Location = new System.Drawing.Point(141, 105);
+            this.tbx_order.Location = new System.Drawing.Point(135, 101);
             this.tbx_order.Name = "tbx_order";
             this.tbx_order.Size = new System.Drawing.Size(350, 29);
             this.tbx_order.TabIndex = 3;
@@ -78,30 +96,30 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(12, 109);
+            this.label1.Location = new System.Drawing.Point(6, 105);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 21);
+            this.label1.Size = new System.Drawing.Size(122, 21);
             this.label1.TabIndex = 4;
-            this.label1.Text = "订单列表地址";
+            this.label1.Text = "订单列表地址：";
             // 
             // lb_computerInfo
             // 
             this.lb_computerInfo.AutoSize = true;
             this.lb_computerInfo.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lb_computerInfo.Location = new System.Drawing.Point(12, 21);
+            this.lb_computerInfo.Location = new System.Drawing.Point(6, 17);
             this.lb_computerInfo.Name = "lb_computerInfo";
-            this.lb_computerInfo.Size = new System.Drawing.Size(106, 21);
+            this.lb_computerInfo.Size = new System.Drawing.Size(122, 21);
             this.lb_computerInfo.TabIndex = 5;
-            this.lb_computerInfo.Text = "当前系统信息";
+            this.lb_computerInfo.Text = "当前系统信息：";
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 334);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 385);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(647, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(629, 22);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -122,7 +140,7 @@
             // 
             this.tb_num.Enabled = false;
             this.tb_num.LargeChange = 3;
-            this.tb_num.Location = new System.Drawing.Point(141, 156);
+            this.tb_num.Location = new System.Drawing.Point(135, 152);
             this.tb_num.Maximum = 0;
             this.tb_num.Name = "tb_num";
             this.tb_num.Size = new System.Drawing.Size(350, 45);
@@ -133,17 +151,17 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(12, 156);
+            this.label2.Location = new System.Drawing.Point(6, 152);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 21);
+            this.label2.Size = new System.Drawing.Size(122, 21);
             this.label2.TabIndex = 8;
-            this.label2.Text = "最大截图数量";
+            this.label2.Text = "最大截图数量：";
             // 
             // btn_order
             // 
             this.btn_order.Enabled = false;
             this.btn_order.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_order.Location = new System.Drawing.Point(497, 105);
+            this.btn_order.Location = new System.Drawing.Point(491, 101);
             this.btn_order.Name = "btn_order";
             this.btn_order.Size = new System.Drawing.Size(95, 29);
             this.btn_order.TabIndex = 4;
@@ -155,7 +173,7 @@
             // 
             this.lb_num.AutoSize = true;
             this.lb_num.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lb_num.Location = new System.Drawing.Point(497, 157);
+            this.lb_num.Location = new System.Drawing.Point(491, 153);
             this.lb_num.Name = "lb_num";
             this.lb_num.Size = new System.Drawing.Size(19, 19);
             this.lb_num.TabIndex = 10;
@@ -165,16 +183,16 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(12, 64);
+            this.label4.Location = new System.Drawing.Point(6, 60);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(106, 21);
+            this.label4.Size = new System.Drawing.Size(122, 21);
             this.label4.TabIndex = 11;
-            this.label4.Text = "保存截图路径";
+            this.label4.Text = "保存截图路径：";
             // 
             // tbx_path
             // 
             this.tbx_path.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbx_path.Location = new System.Drawing.Point(141, 61);
+            this.tbx_path.Location = new System.Drawing.Point(135, 57);
             this.tbx_path.Name = "tbx_path";
             this.tbx_path.ReadOnly = true;
             this.tbx_path.Size = new System.Drawing.Size(350, 26);
@@ -183,7 +201,7 @@
             // btn_path
             // 
             this.btn_path.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_path.Location = new System.Drawing.Point(497, 60);
+            this.btn_path.Location = new System.Drawing.Point(491, 56);
             this.btn_path.Name = "btn_path";
             this.btn_path.Size = new System.Drawing.Size(95, 29);
             this.btn_path.TabIndex = 2;
@@ -195,7 +213,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(14, 294);
+            this.label3.Location = new System.Drawing.Point(8, 290);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(440, 17);
             this.label3.TabIndex = 14;
@@ -205,7 +223,7 @@
             // 
             this.cbx_list.AutoSize = true;
             this.cbx_list.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbx_list.Location = new System.Drawing.Point(141, 202);
+            this.cbx_list.Location = new System.Drawing.Point(135, 198);
             this.cbx_list.Name = "cbx_list";
             this.cbx_list.Size = new System.Drawing.Size(93, 25);
             this.cbx_list.TabIndex = 15;
@@ -216,7 +234,7 @@
             // 
             this.cbx_invoice.AutoSize = true;
             this.cbx_invoice.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbx_invoice.Location = new System.Drawing.Point(266, 202);
+            this.cbx_invoice.Location = new System.Drawing.Point(260, 198);
             this.cbx_invoice.Name = "cbx_invoice";
             this.cbx_invoice.Size = new System.Drawing.Size(61, 25);
             this.cbx_invoice.TabIndex = 16;
@@ -227,46 +245,182 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(14, 204);
+            this.label5.Location = new System.Drawing.Point(8, 200);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(106, 21);
+            this.label5.Size = new System.Drawing.Size(122, 21);
             this.label5.TabIndex = 17;
-            this.label5.Text = "截图生成选项";
+            this.label5.Text = "截图生成选项：";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lb_computerInfo);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.btn_start);
+            this.groupBox1.Controls.Add(this.cbx_invoice);
+            this.groupBox1.Controls.Add(this.tbx_order);
+            this.groupBox1.Controls.Add(this.cbx_list);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.tb_num);
+            this.groupBox1.Controls.Add(this.btn_path);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.tbx_path);
+            this.groupBox1.Controls.Add(this.btn_order);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lb_num);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(615, 353);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "生成选项";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(629, 385);
+            this.tabControl1.TabIndex = 19;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(621, 359);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "截图设置";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Controls.Add(this.groupBox2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(621, 359);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "订单设置";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btn_login);
+            this.groupBox2.Controls.Add(this.tbx_userpass);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.tbx_loginname);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.tbx_adminurl);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(607, 117);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "后台登录设置";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "地址：";
+            // 
+            // tbx_adminurl
+            // 
+            this.tbx_adminurl.Location = new System.Drawing.Point(53, 23);
+            this.tbx_adminurl.Name = "tbx_adminurl";
+            this.tbx_adminurl.Size = new System.Drawing.Size(227, 21);
+            this.tbx_adminurl.TabIndex = 1;
+            // 
+            // tbx_loginname
+            // 
+            this.tbx_loginname.Location = new System.Drawing.Point(53, 50);
+            this.tbx_loginname.Name = "tbx_loginname";
+            this.tbx_loginname.Size = new System.Drawing.Size(227, 21);
+            this.tbx_loginname.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 53);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "账号：";
+            // 
+            // tbx_userpass
+            // 
+            this.tbx_userpass.Location = new System.Drawing.Point(53, 77);
+            this.tbx_userpass.Name = "tbx_userpass";
+            this.tbx_userpass.PasswordChar = '*';
+            this.tbx_userpass.Size = new System.Drawing.Size(227, 21);
+            this.tbx_userpass.TabIndex = 5;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 80);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 12);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "密码：";
+            // 
+            // btn_login
+            // 
+            this.btn_login.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btn_login.Location = new System.Drawing.Point(286, 77);
+            this.btn_login.Name = "btn_login";
+            this.btn_login.Size = new System.Drawing.Size(75, 23);
+            this.btn_login.TabIndex = 6;
+            this.btn_login.Text = "登 录";
+            this.btn_login.UseVisualStyleBackColor = true;
+            this.btn_login.Click += new System.EventHandler(this.btn_login_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Location = new System.Drawing.Point(6, 129);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(609, 224);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "订单设置";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(647, 356);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.cbx_invoice);
-            this.Controls.Add(this.cbx_list);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.btn_path);
-            this.Controls.Add(this.tbx_path);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.lb_num);
-            this.Controls.Add(this.btn_order);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.tb_num);
+            this.ClientSize = new System.Drawing.Size(629, 407);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.lb_computerInfo);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbx_order);
-            this.Controls.Add(this.btn_start);
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Opacity = 0.9D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "订单自动截图";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,6 +447,19 @@
         private System.Windows.Forms.CheckBox cbx_list;
         private System.Windows.Forms.CheckBox cbx_invoice;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox tbx_adminurl;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbx_userpass;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbx_loginname;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btn_login;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
