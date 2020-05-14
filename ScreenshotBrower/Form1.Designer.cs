@@ -508,6 +508,7 @@
             this.tbx_adminurl.Name = "tbx_adminurl";
             this.tbx_adminurl.Size = new System.Drawing.Size(227, 21);
             this.tbx_adminurl.TabIndex = 1;
+            this.tbx_adminurl.Text = "http://139.129.97.67/site/login";
             // 
             // label6
             // 

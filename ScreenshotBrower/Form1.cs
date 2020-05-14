@@ -45,6 +45,7 @@ namespace ScreenshotBrower
         {
             var dirBase = tbx_path.Text;
             var taskMax = tb_num.Value;
+            var button = sender as Button;
             Task.Run(async () =>
             {
 
@@ -103,6 +104,10 @@ namespace ScreenshotBrower
                 }));
 
                 var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+                if (button.Tag != null)
+                {
+                    newdir = Path.Combine(newdir, button.Tag.ToString());//批量过来的指定目录 
+                }
                 Directory.CreateDirectory(newdir);
 
                 if (cbx_list.Checked)
@@ -185,11 +190,14 @@ namespace ScreenshotBrower
                 }
 
                 await browser.CloseAsync();
-                if (sender != null)
+
+
+                this.Invoke(new MethodInvoker(() =>
                 {
-                    this.Invoke(new MethodInvoker(() =>
+                    toolStripStatusLabel1.Text = $"全部生成完毕";
+
+                    if (button.Tag == null)
                     {
-                        toolStripStatusLabel1.Text = $"全部生成完毕";
                         if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
                         {
                             try
@@ -201,8 +209,9 @@ namespace ScreenshotBrower
                                 MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-                    }));
-                }
+                    }
+                }));
+
             });
 
 
@@ -490,20 +499,22 @@ namespace ScreenshotBrower
                 var resp = client.Post(request);
                 if (!resp.IsSuccessful)
                 {
-                    MessageBox.Show("请求无效，登录失败","提示");
+                    MessageBox.Show("请求无效，登录失败", "提示");
                     return;
                 }
                 else if (resp.Content == "no")
                 {
-                    MessageBox.Show("登录失败，账号/密码 错误","提示");
+                    MessageBox.Show("登录失败，账号/密码 错误", "提示");
                     return;
                 }
+
+                tbx_order.Text = "http://" + LoginUri.Host;
 
                 var login = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResult>(resp.Content);
                 btn_build.Enabled = true;
                 LoginState = true;
                 CookieContainer = client.CookieContainer;
-                MessageBox.Show("登录成功，配置好截图设置，可进行批量生成操作","提示");
+                MessageBox.Show("登录成功，进行批量生成操作之前，请先配置截图设置", "提示");
             }
             catch (Exception ex)
             {
@@ -701,39 +712,44 @@ namespace ScreenshotBrower
 
             var successNum = 0;
 
-            for (int i = 0; i < list.Count; i++)
+            Task.Run(() =>
             {
-                var item = list[i];
 
-              
-
-               
-                var shopstatus = ChangeShop(item.shopModel.shopname, item.shopModel.address, item.shopModel.email, item.shopModel.tel);
-
-                this.BeginInvoke(new MethodInvoker(() =>
+                for (int i = 0; i < list.Count; i++)
                 {
-                    toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置店铺信息：{ item.shopModel.shopname}";
-                }));
+                    var item = list[i];
 
-                var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
+                    var shopstatus = ChangeShop(item.shopModel.shopname, item.shopModel.address, item.shopModel.email, item.shopModel.tel);
 
-                this.BeginInvoke(new MethodInvoker(() =>
-                {
-                    toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
-                }));
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置店铺信息：{ item.shopModel.shopname}";
+                    }));
 
-                if (shopstatus && orderstat)
-                {
-                    successNum += 1;
-                    listView1.Items[i].ForeColor = Color.Green;
-                    btn_start_ClickAsync(null, null);
+                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
+
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
+                    }));
+
+                    if (shopstatus && orderstat)
+                    {
+                        successNum += 1;
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            listView1.Items[i].ForeColor = Color.Green;
+                            btn_build.Tag = $"{item.orderModel.trademarkName}-{item.orderModel.trademarkNo}";
+                            btn_start_ClickAsync(btn_build, null);
+                        }));
+                    }
                 }
-            }
 
-            this.BeginInvoke(new MethodInvoker(() =>
-            {
-                toolStripStatusLabel1.Text = $"批量生成结束，成功生成：" + successNum;
-            }));
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text = $"批量生成结束，成功生成：" + successNum;
+                }));
+            });
 
         }
     }
