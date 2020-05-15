@@ -97,7 +97,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\BulidModel.cs" />
+    <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ShopModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -134,6 +137,9 @@
     <None Include="Resources\list-head.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EPPlus">
+      <Version>5.1.2</Version>
+    </PackageReference>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.11.23</Version>
     </PackageReference>

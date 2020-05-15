@@ -16,6 +16,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.Devices;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RestSharp.Serialization.Xml;
+using OfficeOpenXml;
+using System.Net;
+using PuppeteerSharp.Helpers;
 
 namespace ScreenshotBrower
 {
@@ -26,7 +32,7 @@ namespace ScreenshotBrower
             InitializeComponent();
 
             this.Text += " v" + this.ProductVersion.ToLower();
-            lb_computerInfo.Text = $"{lb_computerInfo.Text}：{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
+            lb_computerInfo.Text = $"{lb_computerInfo.Text}{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
             tbx_path.Focus();
 
             label1.DoubleClick += (s, e) =>
@@ -39,6 +45,7 @@ namespace ScreenshotBrower
         {
             var dirBase = tbx_path.Text;
             var taskMax = tb_num.Value;
+            var button = sender as Button;
             Task.Run(async () =>
             {
 
@@ -97,6 +104,10 @@ namespace ScreenshotBrower
                 }));
 
                 var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+                if (button.Tag != null)
+                {
+                    newdir = Path.Combine(newdir, button.Tag.ToString());//批量过来的指定目录 
+                }
                 Directory.CreateDirectory(newdir);
 
                 if (cbx_list.Checked)
@@ -203,21 +214,28 @@ namespace ScreenshotBrower
                 }
 
                 await browser.CloseAsync();
+
+
                 this.Invoke(new MethodInvoker(() =>
                 {
                     toolStripStatusLabel1.Text = $"全部生成完毕";
-                    if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+
+                    if (button.Tag == null)
                     {
-                        try
+                        if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
                         {
-                            Process.Start("explorer.exe", newdir);
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            try
+                            {
+                                Process.Start("explorer.exe", newdir);
+                            }
+                            catch (Exception)
+                            {
+                                MessageBox.Show("打开文件夹失败\r\n文件路径：" + newdir, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
                     }
                 }));
+
             });
 
 
@@ -453,6 +471,310 @@ namespace ScreenshotBrower
             {
 
             }
+        }
+
+        private bool LoginState;
+        private Uri LoginUri;
+        private CookieContainer CookieContainer;
+
+        private void btn_login_Click(object sender, EventArgs e)
+        {
+
+
+#if DEBUG
+            tbx_adminurl.Text = "http://139.129.97.67/site/login";
+            tbx_loginname.Text = "admin";
+            tbx_userpass.Text = "amaz123456";
+#endif
+            var loginurl = tbx_adminurl.Text.Trim();
+            var username = tbx_loginname.Text.Trim();
+            var userpass = tbx_userpass.Text.Trim();
+
+            if (!loginurl.StartsWith("http:"))
+            {
+                MessageBox.Show("请正确填写后台登录地址");
+                return;
+            }
+            else if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("请正确填写后台登录账号");
+                return;
+            }
+            else if (string.IsNullOrEmpty(userpass))
+            {
+                MessageBox.Show("请正确填写后台登录密码");
+                return;
+            }
+
+            try
+            {
+                LoginUri = new Uri(loginurl);
+
+                var client = new RestClient();
+                client.CookieContainer = new CookieContainer();
+                //     client.UseNewtonsoftJson();
+                client.BaseUrl = LoginUri;
+                var request = new RestRequest();
+                //  request.Resource = "login";
+                request.AddHeader("Accept", "application/json");
+                //request.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.AddParameter("username", username);
+                request.AddParameter("password", userpass);
+                var resp = client.Post(request);
+                if (!resp.IsSuccessful)
+                {
+                    MessageBox.Show("请求无效，登录失败", "提示");
+                    return;
+                }
+                else if (resp.Content == "no")
+                {
+                    MessageBox.Show("登录失败，账号/密码 错误", "提示");
+                    return;
+                }
+
+                tbx_order.Text = "http://" + LoginUri.Host;
+
+                var login = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResult>(resp.Content);
+                btn_build.Enabled = true;
+                LoginState = true;
+                CookieContainer = client.CookieContainer;
+                MessageBox.Show("登录成功，进行批量生成操作之前，请先配置截图设置", "提示");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "错误");
+            }
+
+
+
+        }
+
+
+        public bool ChangeShop(string shopName, string address, string email, string tel)
+        {
+
+            var client = new RestClient();
+            client.CookieContainer = CookieContainer;
+            var request = new RestRequest();
+            request.Resource = $"http://{LoginUri.Host}/shop/index";
+
+            request.AddParameter("id", "1");
+            request.AddParameter("shop_name", shopName);
+            request.AddParameter("address", address);
+            request.AddParameter("email", email);
+            request.AddParameter("tel", tel);
+            var resp = client.Post(request);
+            return resp.IsSuccessful;
+
+        }
+
+
+        public bool ChangeOrder(string asin, string startTime, string endTime, string num)
+        {
+
+            var shopinfo = GetShopInfo(asin);
+            if (!shopinfo.state)
+            {
+                return false;
+            }
+            var client = new RestClient();
+            client.CookieContainer = CookieContainer;
+            var request = new RestRequest();
+            request.Resource = $"http://{LoginUri.Host}/order/create";
+
+            request.AddParameter("start_date", startTime);
+            request.AddParameter("end_date", endTime);
+            request.AddParameter("order[sale_channel]", "Amazon.com");
+            request.AddParameter("order[distribution_channel]", "Amazon");
+            request.AddParameter("order[page_img]", shopinfo.data.imgfirst);
+            request.AddParameter("order[info]", shopinfo.data.title);
+            request.AddParameter("order[asin]", asin);
+            request.AddParameter("order[sku]", shopinfo.data.sku + new Random().Next(10000, 99999));
+            request.AddParameter("order[issuer]", shopinfo.data.sku);
+            request.AddParameter("order[num]", "1");
+            request.AddParameter("order[money]", shopinfo.data.price.Replace("$", ""));
+            request.AddParameter("do_num", num);
+            request.AddParameter("do_clear", "on");
+
+            var resp = client.Post(request);
+            if (resp.IsSuccessful)
+            {
+                var result = JsonConvert.DeserializeObject<CreateResult>(resp.Content);
+                return result.code == 200;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 获得商品详情
+        /// </summary>
+        /// <param name="asin"></param>
+        /// <returns></returns>
+        public Result<ShopModel> GetShopInfo(string asin)
+        {
+            var result = new Result<ShopModel>();
+            var client = new RestClient();
+            var request = new RestRequest();
+            request.Resource = $"http://47.254.92.81/1.php?asin={asin}";
+
+            var resp = client.Get(request);
+            if (resp.IsSuccessful)
+            {
+                result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result<ShopModel>>(resp.Content);
+
+            }
+
+            return result;
+
+        }
+
+        private void btn_import_Click(object sender, EventArgs e)
+        {
+
+            var open = new OpenFileDialog();
+            open.Filter = "Excel 2007 xls|*.xls|Excel 2010 xlsx|*.xlsx";
+            open.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                    using (var package = new ExcelPackage(new FileInfo(open.FileName)))
+                    {
+                        var ws = package.Workbook.Worksheets.FirstOrDefault();
+                        if (ws != null)
+                        {
+
+                            int minColumnNum = ws.Dimension.Start.Column;//工作区开始列
+                            int maxColumnNum = ws.Dimension.End.Column; //工作区结束列
+                            int minRowNum = ws.Dimension.Start.Row; //工作区开始行号
+                            int maxRowNum = ws.Dimension.End.Row; //工作区结束行号
+
+                            for (int i = minRowNum + 1; i <= maxRowNum; i++)
+                            {
+
+                                ListViewItem lvi = null;
+
+                                for (int j = minColumnNum; j <= maxColumnNum; j++)
+                                {
+                                    var obj = ws.GetValue(i, j);
+                                    if (obj == null)
+                                        break;
+                                    if (lvi == null)
+                                        lvi = new ListViewItem();
+
+                                    var value = obj.ToString();
+                                    if (j == 8 || j == 9)
+                                    {
+                                        value = ws.GetValue<DateTime>(i, j).ToString("yyyy-MM-dd");
+                                    }
+
+                                    lvi.Text = (listView1.Items.Count + 1).ToString();
+                                    lvi.SubItems.Add(value);
+
+                                }
+                                if (i > 1 && lvi != null)
+                                    listView1.Items.Add(lvi);
+                            }
+                            MessageBox.Show("导入成功,列表现有数量为：" + listView1.Items.Count, "提示");
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show("打开导入模板文件错误,请先关闭正在使用的文件");
+                }
+            }
+
+        }
+
+        private void btn_clear_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Clear();
+        }
+
+        private void btn_build_Click(object sender, EventArgs e)
+        {
+            if (!LoginState || CookieContainer == null)
+            {
+                MessageBox.Show("请先登陆后台");
+                return;
+            }
+
+            var list = new List<BulidModel>();
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                var bulidModel = new BulidModel()
+                {
+                    orderModel = new BuildOrderModel(),
+                    shopModel = new BulidShopModel()
+                };
+                var item = listView1.Items[i];
+                if (item.SubItems.Count > 10)
+                {
+                    bulidModel.shopModel.address = item.SubItems[3].Text;
+                    bulidModel.shopModel.email = item.SubItems[4].Text;
+                    bulidModel.shopModel.tel = item.SubItems[5].Text;
+                    bulidModel.shopModel.shopname = item.SubItems[6].Text;
+
+                    bulidModel.orderModel.trademarkNo = item.SubItems[1].Text;
+                    bulidModel.orderModel.trademarkName = item.SubItems[2].Text;
+
+                    bulidModel.orderModel.Asin = item.SubItems[7].Text;
+                    bulidModel.orderModel.startTime = item.SubItems[8].Text;
+                    bulidModel.orderModel.endTime = item.SubItems[9].Text;
+                    bulidModel.orderModel.OrderNum = item.SubItems[10].Text;
+
+                    list.Add(bulidModel);
+                }
+            }
+
+            var successNum = 0;
+
+            Task.Run(() =>
+            {
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var item = list[i];
+
+                    var shopstatus = ChangeShop(item.shopModel.shopname, item.shopModel.address, item.shopModel.email, item.shopModel.tel);
+
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置店铺信息：{ item.shopModel.shopname}";
+                    }));
+
+                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
+
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
+                    }));
+
+                    if (shopstatus && orderstat)
+                    {
+                        successNum += 1;
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            listView1.Items[i].ForeColor = Color.Green;
+                            btn_build.Tag = $"{item.orderModel.trademarkName}-{item.orderModel.trademarkNo}";
+                            btn_start_ClickAsync(btn_build, null);
+                        }));
+                    }
+                }
+
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text = $"批量生成结束，成功生成：" + successNum;
+                }));
+            });
+
         }
     }
 }
