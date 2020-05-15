@@ -22,6 +22,7 @@ using RestSharp.Serialization.Xml;
 using OfficeOpenXml;
 using System.Net;
 using PuppeteerSharp.Helpers;
+using System.Text.RegularExpressions;
 
 namespace ScreenshotBrower
 {
@@ -578,30 +579,38 @@ namespace ScreenshotBrower
             {
                 return false;
             }
-            var client = new RestClient();
-            client.CookieContainer = CookieContainer;
-            var request = new RestRequest();
-            request.Resource = $"http://{LoginUri.Host}/order/create";
-
-            request.AddParameter("start_date", startTime);
-            request.AddParameter("end_date", endTime);
-            request.AddParameter("order[sale_channel]", "Amazon.com");
-            request.AddParameter("order[distribution_channel]", "Amazon");
-            request.AddParameter("order[page_img]", shopinfo.data.imgfirst);
-            request.AddParameter("order[info]", shopinfo.data.title);
-            request.AddParameter("order[asin]", asin);
-            request.AddParameter("order[sku]", shopinfo.data.sku + new Random().Next(10000, 99999));
-            request.AddParameter("order[issuer]", shopinfo.data.sku);
-            request.AddParameter("order[num]", "1");
-            request.AddParameter("order[money]", shopinfo.data.price.Replace("$", ""));
-            request.AddParameter("do_num", num);
-            request.AddParameter("do_clear", "on");
-
-            var resp = client.Post(request);
-            if (resp.IsSuccessful)
+            try
             {
-                var result = JsonConvert.DeserializeObject<CreateResult>(resp.Content);
-                return result.code == 200;
+                var client = new RestClient();
+                client.CookieContainer = CookieContainer;
+                var request = new RestRequest();
+                request.Resource = $"http://{LoginUri.Host}/order/create";
+
+                request.AddParameter("start_date", startTime);
+                request.AddParameter("end_date", endTime);
+                request.AddParameter("order[sale_channel]", "Amazon.com");
+                request.AddParameter("order[distribution_channel]", "Amazon");
+                request.AddParameter("order[page_img]", shopinfo.data.imgfirst);
+                request.AddParameter("order[info]", shopinfo.data.title);
+                request.AddParameter("order[asin]", asin);
+                request.AddParameter("order[sku]", shopinfo.data.sku + new Random().Next(10000, 99999));
+                request.AddParameter("order[issuer]", shopinfo.data.sku);
+                request.AddParameter("order[num]", "1");
+                request.AddParameter("order[money]", shopinfo.data.price.Replace("$", ""));
+                request.AddParameter("do_num", num);
+                request.AddParameter("do_clear", "on");
+
+                var resp = client.Post(request);
+                if (resp.IsSuccessful)
+                {
+                    var result = JsonConvert.DeserializeObject<CreateResult>(resp.Content);
+                    return result.code == 200;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return false;
             }
 
             return false;
@@ -624,7 +633,8 @@ namespace ScreenshotBrower
             if (resp.IsSuccessful)
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result<ShopModel>>(resp.Content);
-
+                result.data.price = result.data.price ?? "10";
+                result.data.price = Regex.Match(result.data.price, "[\\d\\.]+$").Value;
             }
 
             return result;
