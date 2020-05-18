@@ -52,6 +52,7 @@ namespace ScreenshotBrower
 
                 this.Invoke(new MethodInvoker(() =>
                 {
+                    toolStripStatusLabel1.Tag = "1";
                     toolStripStatusLabel1.Text = "初始化插件";
                 }));
                 await new BrowserFetcher(new BrowserFetcherOptions()
@@ -107,7 +108,7 @@ namespace ScreenshotBrower
                 var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
                 if (button.Tag != null)
                 {
-                    newdir = Path.Combine(newdir, button.Tag.ToString());//批量过来的指定目录 
+                    newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd"), button.Tag.ToString());//批量过来的指定目录 
                 }
                 Directory.CreateDirectory(newdir);
 
@@ -219,11 +220,11 @@ namespace ScreenshotBrower
 
                 this.Invoke(new MethodInvoker(() =>
                 {
+                    toolStripStatusLabel1.Tag = "0";
                     toolStripStatusLabel1.Text = $"全部生成完毕";
-
                     if (button.Tag == null)
                     {
-                        if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+                        if (MessageBox.Show("当前操作已经执行完成,是否打开文件夹", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
                             try
                             {
@@ -574,6 +575,10 @@ namespace ScreenshotBrower
         public bool ChangeOrder(string asin, string startTime, string endTime, string num)
         {
 
+            this.Invoke(new MethodInvoker(() =>
+            {
+                toolStripStatusLabel1.Text += $" 获取商品详情";
+            }));
             var shopinfo = GetShopInfo(asin);
             if (!shopinfo.state)
             {
@@ -629,7 +634,7 @@ namespace ScreenshotBrower
             var request = new RestRequest();
             request.Resource = $"http://47.254.92.81/1.php?asin={asin}";
 
-            var resp = client.Get(request);
+            var resp = client.Get(request);           
             if (resp.IsSuccessful)
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result<ShopModel>>(resp.Content);
@@ -645,7 +650,7 @@ namespace ScreenshotBrower
         {
 
             var open = new OpenFileDialog();
-            open.Filter = "Excel 2007 xls|*.xls|Excel 2010 xlsx|*.xlsx";
+            open.Filter = "97-2003 Excel(*.xls)|*.xls|Excel(*.xlsx)|*.xlsx";
             open.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             if (open.ShowDialog() == DialogResult.OK)
             {
@@ -697,7 +702,7 @@ namespace ScreenshotBrower
                 catch (Exception ex)
                 {
 
-                    MessageBox.Show("打开导入模板文件错误,请先关闭正在使用的文件");
+                    MessageBox.Show("打开导入模板文件错误，" + ex.Message, "错误");
                 }
             }
 
@@ -712,9 +717,20 @@ namespace ScreenshotBrower
         {
             if (!LoginState || CookieContainer == null)
             {
-                MessageBox.Show("请先登陆后台");
+                MessageBox.Show("请先登陆后台", "提示");
                 return;
             }
+            if (!Directory.Exists(tbx_path.Text))
+            {
+                MessageBox.Show("请设置截图保存路径", "提示");
+                return;
+            }
+            if (tb_num.Value < 1)
+            {
+                MessageBox.Show("请设置截图生成数量", "提示");
+                return;
+            }
+
 
             var list = new List<BulidModel>();
             for (int i = 0; i < listView1.Items.Count; i++)
@@ -743,29 +759,41 @@ namespace ScreenshotBrower
                     list.Add(bulidModel);
                 }
             }
+            if (!list.Any())
+            {
+                MessageBox.Show("当前列表没有可生成的内容", "提示");
+                return;
+            }
 
             var successNum = 0;
 
-            Task.Run(() =>
+            btn_build.Enabled = false;
+            Task.Run(async () =>
             {
-
                 for (int i = 0; i < list.Count; i++)
                 {
+                    while (toolStripStatusLabel1.Tag != null && toolStripStatusLabel1.Tag.Equals("1"))
+                    {
+                        await Task.Delay(2000);
+                        continue;
+                    }
+
                     var item = list[i];
 
-                    var shopstatus = ChangeShop(item.shopModel.shopname, item.shopModel.address, item.shopModel.email, item.shopModel.tel);
 
                     this.Invoke(new MethodInvoker(() =>
                     {
+                        toolStripStatusLabel1.Tag = "1";
                         toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置店铺信息：{ item.shopModel.shopname}";
                     }));
+                    var shopstatus = ChangeShop(item.shopModel.shopname, item.shopModel.address, item.shopModel.email, item.shopModel.tel);
 
-                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
 
                     this.Invoke(new MethodInvoker(() =>
                     {
                         toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
                     }));
+                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
 
                     if (shopstatus && orderstat)
                     {
@@ -777,13 +805,35 @@ namespace ScreenshotBrower
                             btn_start_ClickAsync(btn_build, null);
                         }));
                     }
+                    else
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            listView1.Items[i].ForeColor = Color.Red;
+                            toolStripStatusLabel1.Tag = "0";
+                        }));
+                    }
+                }
+
+
+                if (MessageBox.Show("批量生成结束，成功生成：" + successNum + "，是否打开文件夹", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        Process.Start("explorer.exe", Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd")));
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("打开文件夹失败\r\n文件路径：" + tbx_path.Text, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
 
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    toolStripStatusLabel1.Text = $"批量生成结束，成功生成：" + successNum;
+                    btn_build.Enabled = true;
                 }));
             });
+
 
         }
     }

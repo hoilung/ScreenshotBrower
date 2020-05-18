@@ -66,6 +66,7 @@
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btn_build = new System.Windows.Forms.Button();
             this.btn_clear = new System.Windows.Forms.Button();
             this.btn_import = new System.Windows.Forms.Button();
@@ -76,7 +77,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbx_adminurl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -427,10 +427,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "后台设置";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.Red;
+            this.label9.Location = new System.Drawing.Point(324, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(329, 12);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "注意：操作当前功能，需要提前配置好【截图设置】中的选项";
+            // 
             // btn_build
             // 
             this.btn_build.Enabled = false;
-            this.btn_build.Location = new System.Drawing.Point(529, 77);
+            this.btn_build.Location = new System.Drawing.Point(568, 75);
             this.btn_build.Name = "btn_build";
             this.btn_build.Size = new System.Drawing.Size(75, 23);
             this.btn_build.TabIndex = 9;
@@ -440,7 +450,7 @@
             // 
             // btn_clear
             // 
-            this.btn_clear.Location = new System.Drawing.Point(448, 77);
+            this.btn_clear.Location = new System.Drawing.Point(487, 75);
             this.btn_clear.Name = "btn_clear";
             this.btn_clear.Size = new System.Drawing.Size(75, 23);
             this.btn_clear.TabIndex = 8;
@@ -450,7 +460,7 @@
             // 
             // btn_import
             // 
-            this.btn_import.Location = new System.Drawing.Point(367, 77);
+            this.btn_import.Location = new System.Drawing.Point(406, 75);
             this.btn_import.Name = "btn_import";
             this.btn_import.Size = new System.Drawing.Size(75, 23);
             this.btn_import.TabIndex = 7;
@@ -461,7 +471,7 @@
             // btn_login
             // 
             this.btn_login.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btn_login.Location = new System.Drawing.Point(286, 77);
+            this.btn_login.Location = new System.Drawing.Point(325, 75);
             this.btn_login.Name = "btn_login";
             this.btn_login.Size = new System.Drawing.Size(75, 23);
             this.btn_login.TabIndex = 6;
@@ -471,7 +481,7 @@
             // 
             // tbx_userpass
             // 
-            this.tbx_userpass.Location = new System.Drawing.Point(53, 77);
+            this.tbx_userpass.Location = new System.Drawing.Point(78, 77);
             this.tbx_userpass.Name = "tbx_userpass";
             this.tbx_userpass.PasswordChar = '*';
             this.tbx_userpass.Size = new System.Drawing.Size(227, 21);
@@ -482,13 +492,13 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 80);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 12);
+            this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 4;
-            this.label8.Text = "密码：";
+            this.label8.Text = "管理密码：";
             // 
             // tbx_loginname
             // 
-            this.tbx_loginname.Location = new System.Drawing.Point(53, 50);
+            this.tbx_loginname.Location = new System.Drawing.Point(78, 50);
             this.tbx_loginname.Name = "tbx_loginname";
             this.tbx_loginname.Size = new System.Drawing.Size(227, 21);
             this.tbx_loginname.TabIndex = 3;
@@ -498,36 +508,25 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 53);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 2;
-            this.label7.Text = "账号：";
+            this.label7.Text = "管理账号：";
             // 
             // tbx_adminurl
             // 
-            this.tbx_adminurl.Location = new System.Drawing.Point(53, 23);
+            this.tbx_adminurl.Location = new System.Drawing.Point(78, 23);
             this.tbx_adminurl.Name = "tbx_adminurl";
             this.tbx_adminurl.Size = new System.Drawing.Size(227, 21);
             this.tbx_adminurl.TabIndex = 1;
-            this.tbx_adminurl.Text = "http://139.129.97.67/site/login";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 26);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.Size = new System.Drawing.Size(65, 12);
             this.label6.TabIndex = 0;
-            this.label6.Text = "地址：";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(286, 26);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(329, 12);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "注意：操作当前功能，需要提前配置好【截图设置】中的选项";
+            this.label6.Text = "后台地址：";
             // 
             // Form1
             // 
