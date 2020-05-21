@@ -23,6 +23,7 @@ using OfficeOpenXml;
 using System.Net;
 using PuppeteerSharp.Helpers;
 using System.Text.RegularExpressions;
+using System.Security.Policy;
 
 namespace ScreenshotBrower
 {
@@ -112,6 +113,11 @@ namespace ScreenshotBrower
                 }
                 Directory.CreateDirectory(newdir);
 
+                //每次重新加载列表页面,获得最新内容
+                await page.GoToAsync(tbx_order.Text);
+                var html = await page.GetContentAsync();
+                var orderList = GetOdrderList(html, new Uri(page.Url));
+                orderList.OrderPase();
                 if (cbx_list.Checked)
                 {
 
@@ -122,7 +128,7 @@ namespace ScreenshotBrower
                         toolStripStatusLabel1.Text = "正在生成列表截图";
                     }));
                     //列表
-                    await page.GoToAsync(orderList.OrderLink);
+
                     var listname = newdir + "/list.jpg";
                     using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
                     {
@@ -366,7 +372,7 @@ namespace ScreenshotBrower
             }
         }
 
-        private OdrderList orderList;
+        // private OdrderList orderList;
         /// <summary>
         /// 设置任务订单数量
         /// </summary>
@@ -389,10 +395,7 @@ namespace ScreenshotBrower
             var resp = client.Get(request);
             if (resp.IsSuccessful)
             {
-                orderList = new OdrderList();
-                orderList.OrderLink = $"{client.BaseUrl.Scheme}://{client.BaseUrl.Host}";
-                orderList.OrderHtml = resp.Content;
-                orderList.OrderPase();
+                var orderList = GetOdrderList(resp.Content, client.BaseUrl);
 
                 tb_num.Maximum = orderList.Orders.Count();
                 tb_num.Enabled = true;
@@ -404,6 +407,16 @@ namespace ScreenshotBrower
             {
                 toolStripStatusLabel1.Text = "获取订单数量异常，请检查是否生成";
             }
+        }
+
+        private OdrderList GetOdrderList(string html, Uri uri)
+        {
+            var orderList = new OdrderList();
+            orderList.OrderLink = $"{uri.Scheme}://{uri.Host}";
+            orderList.OrderHtml = html;
+            orderList.OrderPase();
+
+            return orderList;
         }
 
         private void tb_num_Scroll(object sender, EventArgs e)
@@ -634,7 +647,7 @@ namespace ScreenshotBrower
             var request = new RestRequest();
             request.Resource = $"http://47.254.92.81/1.php?asin={asin}";
 
-            var resp = client.Get(request);           
+            var resp = client.Get(request);
             if (resp.IsSuccessful)
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result<ShopModel>>(resp.Content);
