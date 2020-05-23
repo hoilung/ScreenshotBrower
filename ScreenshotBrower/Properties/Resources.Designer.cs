@@ -102,9 +102,22 @@ namespace ScreenshotBrower.Properties {
         
         /// <summary>
         ///   查找类似 function oAddContent(text)
-        ///{	var b=document.querySelector(&apos;body&apos;);
-        ///	b.before(document.URL+&apos; &apos;+text);
-        ///	b.after(document.URL+&apos; &apos;+text);
+        ///{
+        ///	var nodep=document.createElement(&apos;p&apos;);
+        ///	var node2=document.createElement(&apos;span&apos;);
+        ///	node2.style=&quot;display: inline-block;margin-left: 400px;&quot;;
+        ///	node2.innerText=text;
+        ///	
+        ///	var node=document.createElement(&apos;h2&apos;);
+        ///	node.innerText=document.URL;		
+        ///	node.append(node2);	
+        ///	node.append(nodep);
+        ///	node.append(nodep.cloneNode(true));
+        ///		
+        ///	document.body.firstChild.before(node);	
+        ///	document.body.lastChild.after(node.cloneNode(true));
+        ///	
+        ///	document.getElementById(&apos;skiplink&apos;).remove();
         ///} 的本地化字符串。
         /// </summary>
         internal static string oAddContent {

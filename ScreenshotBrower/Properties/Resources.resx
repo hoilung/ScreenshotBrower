@@ -132,9 +132,22 @@
   </data>
   <data name="oAddContent" xml:space="preserve">
     <value>function oAddContent(text)
-{	var b=document.querySelector('body');
-	b.before(document.URL+' '+text);
-	b.after(document.URL+' '+text);
+{
+	var nodep=document.createElement('p');
+	var node2=document.createElement('span');
+	node2.style="display: inline-block;margin-left: 400px;";
+	node2.innerText=text;
+	
+	var node=document.createElement('h2');
+	node.innerText=document.URL;		
+	node.append(node2);	
+	node.append(nodep);
+	node.append(nodep.cloneNode(true));
+		
+	document.body.firstChild.before(node);	
+	document.body.lastChild.after(node.cloneNode(true));
+	
+	document.getElementById('skiplink').remove();
 }</value>
     <comment>增加页面内容</comment>
   </data>
