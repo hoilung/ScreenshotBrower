@@ -435,7 +435,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(286, 26);
+            this.label9.Location = new System.Drawing.Point(323, 23);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(329, 12);
             this.label9.TabIndex = 10;
@@ -528,7 +528,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 26);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 0;
             this.label6.Text = "地址：";
             // 
