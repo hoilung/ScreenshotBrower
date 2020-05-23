@@ -66,6 +66,7 @@
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btn_build = new System.Windows.Forms.Button();
             this.btn_clear = new System.Windows.Forms.Button();
             this.btn_import = new System.Windows.Forms.Button();
@@ -76,7 +77,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbx_adminurl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -85,6 +87,7 @@
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_start
@@ -123,7 +126,7 @@
             // 
             this.lb_computerInfo.AutoSize = true;
             this.lb_computerInfo.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lb_computerInfo.Location = new System.Drawing.Point(6, 17);
+            this.lb_computerInfo.Location = new System.Drawing.Point(6, 21);
             this.lb_computerInfo.Name = "lb_computerInfo";
             this.lb_computerInfo.Size = new System.Drawing.Size(122, 21);
             this.lb_computerInfo.TabIndex = 5;
@@ -291,12 +294,13 @@
             this.groupBox1.Size = new System.Drawing.Size(668, 369);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "生成选项";
+            this.groupBox1.Text = "生成设置";
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -312,7 +316,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(674, 375);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "截图设置";
+            this.tabPage1.Text = "订单截图";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -324,7 +328,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(674, 375);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "网站设置";
+            this.tabPage2.Text = "订单网站设置";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox3
@@ -427,6 +431,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "后台设置";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.Red;
+            this.label9.Location = new System.Drawing.Point(286, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(329, 12);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "注意：操作当前功能，需要提前配置好【截图设置】中的选项";
+            // 
             // btn_build
             // 
             this.btn_build.Enabled = false;
@@ -519,15 +533,24 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "地址：";
             // 
-            // label9
+            // tabPage3
             // 
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(286, 26);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(329, 12);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "注意：操作当前功能，需要提前配置好【截图设置】中的选项";
+            this.tabPage3.Controls.Add(this.ucFullPageScreenShot1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(674, 375);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "全网页截图";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ucFullPageScreenShot1
+            // 
+            this.ucFullPageScreenShot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucFullPageScreenShot1.Location = new System.Drawing.Point(3, 3);
+            this.ucFullPageScreenShot1.Name = "ucFullPageScreenShot1";
+            this.ucFullPageScreenShot1.Size = new System.Drawing.Size(668, 369);
+            this.ucFullPageScreenShot1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -556,6 +579,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -611,6 +635,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabPage tabPage3;
+        private Controls.UCFullPageScreenShot ucFullPageScreenShot1;
     }
 }
 

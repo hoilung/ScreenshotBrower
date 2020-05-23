@@ -99,5 +99,86 @@ namespace ScreenshotBrower.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   查找类似 function oAddContent(text)
+        ///{	var b=document.querySelector(&apos;body&apos;);
+        ///	b.before(document.URL+&apos; &apos;+text);
+        ///	b.after(document.URL+&apos; &apos;+text);
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string oAddContent {
+            get {
+                return ResourceManager.GetString("oAddContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 function oChange(num)
+        ///{
+        ///		document.getElementById(&apos;nav-packard-glow-loc-icon&apos;).click();//open dialog	
+        ///		setTimeout(function()
+        ///		{
+        ///			document.getElementById(&apos;GLUXChangePostalCodeLink&apos;).click(); //click change
+        ///		},2000);	
+        ///		setTimeout(function(){
+        ///			document.getElementById(&apos;GLUXZipUpdateInput&apos;).value=num; //input num
+        ///		},4000);	
+        ///		setTimeout(function(){
+        ///		document.getElementById(&apos;GLUXZipUpdate-announce&apos;).click();//change
+        ///		},6000);		
+        ///		setTimeout(function(){
+        ///		document.querySelector(&apos;button[nam [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string oChange {
+            get {
+                return ResourceManager.GetString("oChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 83707
+        ///83706
+        ///83705
+        ///83704
+        ///83703
+        ///83702
+        ///83701
+        ///83680
+        ///83669
+        ///83642
+        ///83634
+        ///83616
+        ///74965
+        ///74964
+        ///74960
+        ///74931
+        ///74457
+        ///63559
+        ///63546
+        ///63540
+        ///63533
+        ///63501
+        ///42753
+        ///42742
+        ///42741
+        ///42728
+        ///42720
+        ///42715
+        ///50858
+        ///50849
+        ///50846
+        ///50837
+        ///50002
+        ///74965
+        ///74964
+        ///74960
+        ///74931 的本地化字符串。
+        /// </summary>
+        internal static string zip {
+            get {
+                return ResourceManager.GetString("zip", resourceCulture);
+            }
+        }
     }
 }
