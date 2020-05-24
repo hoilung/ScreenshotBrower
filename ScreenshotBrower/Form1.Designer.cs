@@ -139,7 +139,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 401);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(682, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(692, 22);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -305,7 +305,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(682, 401);
+            this.tabControl1.Size = new System.Drawing.Size(692, 401);
             this.tabControl1.TabIndex = 19;
             // 
             // tabPage1
@@ -528,7 +528,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 26);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 0;
             this.label6.Text = "地址：";
             // 
@@ -538,7 +538,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(674, 375);
+            this.tabPage3.Size = new System.Drawing.Size(684, 375);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "全网页截图";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -548,7 +548,7 @@
             this.ucFullPageScreenShot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucFullPageScreenShot1.Location = new System.Drawing.Point(3, 3);
             this.ucFullPageScreenShot1.Name = "ucFullPageScreenShot1";
-            this.ucFullPageScreenShot1.Size = new System.Drawing.Size(668, 369);
+            this.ucFullPageScreenShot1.Size = new System.Drawing.Size(678, 369);
             this.ucFullPageScreenShot1.TabIndex = 0;
             // 
             // Form1
@@ -556,7 +556,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(682, 423);
+            this.ClientSize = new System.Drawing.Size(692, 423);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
