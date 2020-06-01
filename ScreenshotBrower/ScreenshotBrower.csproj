@@ -183,7 +183,9 @@
   <ItemGroup>
     <None Include="Resources\favicon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\preload.txt" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\zip.txt" />
   </ItemGroup>

@@ -42,6 +42,7 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbx_his = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -60,6 +61,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbx_his);
             this.groupBox2.Controls.Add(this.cbx_city);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.btn_start);
@@ -81,7 +83,7 @@
             this.cbx_city.AutoSize = true;
             this.cbx_city.Checked = true;
             this.cbx_city.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_city.Location = new System.Drawing.Point(483, 30);
+            this.cbx_city.Location = new System.Drawing.Point(445, 30);
             this.cbx_city.Name = "cbx_city";
             this.cbx_city.Size = new System.Drawing.Size(72, 16);
             this.cbx_city.TabIndex = 9;
@@ -101,7 +103,7 @@
             // 
             // btn_start
             // 
-            this.btn_start.Location = new System.Drawing.Point(486, 64);
+            this.btn_start.Location = new System.Drawing.Point(448, 64);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(75, 23);
             this.btn_start.TabIndex = 7;
@@ -114,7 +116,7 @@
             this.cbx_text.AutoSize = true;
             this.cbx_text.Checked = true;
             this.cbx_text.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_text.Location = new System.Drawing.Point(405, 30);
+            this.cbx_text.Location = new System.Drawing.Point(367, 30);
             this.cbx_text.Name = "cbx_text";
             this.cbx_text.Size = new System.Drawing.Size(72, 16);
             this.cbx_text.TabIndex = 6;
@@ -125,12 +127,12 @@
             // 
             this.tbx_text.Location = new System.Drawing.Point(85, 28);
             this.tbx_text.Name = "tbx_text";
-            this.tbx_text.Size = new System.Drawing.Size(307, 21);
+            this.tbx_text.Size = new System.Drawing.Size(276, 21);
             this.tbx_text.TabIndex = 5;
             // 
             // btn_path
             // 
-            this.btn_path.Location = new System.Drawing.Point(405, 64);
+            this.btn_path.Location = new System.Drawing.Point(367, 64);
             this.btn_path.Name = "btn_path";
             this.btn_path.Size = new System.Drawing.Size(75, 23);
             this.btn_path.TabIndex = 4;
@@ -143,7 +145,7 @@
             this.tbx_path.Location = new System.Drawing.Point(85, 65);
             this.tbx_path.Name = "tbx_path";
             this.tbx_path.ReadOnly = true;
-            this.tbx_path.Size = new System.Drawing.Size(307, 21);
+            this.tbx_path.Size = new System.Drawing.Size(276, 21);
             this.tbx_path.TabIndex = 3;
             // 
             // label3
@@ -188,6 +190,18 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(670, 358);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
+            // cbx_his
+            // 
+            this.cbx_his.AutoSize = true;
+            this.cbx_his.Checked = true;
+            this.cbx_his.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbx_his.Location = new System.Drawing.Point(523, 30);
+            this.cbx_his.Name = "cbx_his";
+            this.cbx_his.Size = new System.Drawing.Size(72, 16);
+            this.cbx_his.TabIndex = 10;
+            this.cbx_his.Text = "保留记录";
+            this.cbx_his.UseVisualStyleBackColor = true;
+            // 
             // UCFullPageScreenShot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -219,5 +233,6 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.CheckBox cbx_his;
     }
 }

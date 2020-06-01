@@ -150,6 +150,15 @@ namespace ScreenshotBrower.Properties {
         }
         
         /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        internal static string preload {
+            get {
+                return ResourceManager.GetString("preload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 83707
         ///83706
         ///83705

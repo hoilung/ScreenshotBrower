@@ -73,7 +73,7 @@ namespace ScreenshotBrower.Controls
             progressBar.Value = 0;
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
-            Task.Run(() => BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty));
+            Task.Run(() => BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked));
 
         }
 
@@ -85,7 +85,7 @@ namespace ScreenshotBrower.Controls
         /// <param name="changeCity">切换城市</param>
         /// <param name="addText">添加页眉/页脚内容</param>
         /// <returns></returns>
-        private async Task BulidPdfAsync(Uri[] urls, string path, bool changeCity, string addText)
+        private async Task BulidPdfAsync(Uri[] urls, string path, bool changeCity, string addText, bool saveHis)
         {
 
             try
@@ -140,6 +140,8 @@ namespace ScreenshotBrower.Controls
                         await Task.Delay(10000);
                     }
                     int count = 0;
+
+
                     foreach (var item in urls)
                     {
                         var ht = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
@@ -155,8 +157,24 @@ namespace ScreenshotBrower.Controls
                                     progressBar.PerformStep();
                                 }
                             }));
-                            await page.GoToAsync(item.ToString());
-                            var file = Path.Combine(path, item.AbsolutePath.Replace("/dp/", "") + ".pdf");
+
+                            //搜索记录
+                            if (saveHis)
+                            {
+                                var preurl = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).OrderBy(m => Guid.NewGuid()).Take(6);
+                                foreach (var url in preurl)
+                                {
+                                    await page.GoToAsync(url);
+                                }
+                            }
+                            //目标页面
+                            await page.GoToAsync(item.ToString()); 
+                            if (saveHis)
+                            {
+                                var result = await page.EvaluateFunctionAsync<string>("()=>{try{window.scrollBy(0,document.querySelector('.navFooterBackToTopText').getBoundingClientRect().top-600);return 1;}catch(ex){console.log(ex);return 0;}}");
+                                await Task.Delay(5000);
+                            }
+                            var file = Path.Combine(path, item.AbsolutePath.Replace("/dp/", "").Replace("/", "") + ".pdf");
                             this.Invoke(new MethodInvoker(() =>
                             {
                                 if (toolStripStatus != null)
@@ -197,12 +215,19 @@ namespace ScreenshotBrower.Controls
                         }
                     }
 
+                    if (saveHis)
+                    {
+                        var ck = await page.GetCookiesAsync("https://www.amazon.com");
+                        await page.DeleteCookieAsync(ck);
+                    }
+
+
                     this.Invoke(new MethodInvoker(() =>
                     {
                         if (toolStripStatus != null)
                         {
                             toolStripStatus.Text = $"操作完成 {count}/{urls.Length}";
-                            progressBar.Value = 0;                            
+                            progressBar.Value = 0;
                         }
                     }));
                 }
