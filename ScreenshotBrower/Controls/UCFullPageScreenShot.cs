@@ -31,10 +31,16 @@ namespace ScreenshotBrower.Controls
         private ToolStripProgressBar progressBar;
         private void UCFullPageScreenShot_Load(object sender, EventArgs e)
         {
-            var cl = this.FindForm().Controls.Find("statusStrip1", true);
-            var statusStrip1 = cl[0] as StatusStrip;
-            toolStripStatus = statusStrip1.Items.Find("toolStripStatusLabel1", true)[0] as ToolStripStatusLabel;
-            progressBar = statusStrip1.Items.Find("toolStripProgressBar1", true)[0] as ToolStripProgressBar;
+            if (this.FindForm() != null)
+            {
+                var cl = this.FindForm().Controls.Find("statusStrip1", true);
+                if (cl != null)
+                {
+                    var statusStrip1 = cl[0] as StatusStrip;
+                    toolStripStatus = statusStrip1.Items.Find("toolStripStatusLabel1", true)[0] as ToolStripStatusLabel;
+                    progressBar = statusStrip1.Items.Find("toolStripProgressBar1", true)[0] as ToolStripProgressBar;
+                }
+            }
         }
 
         private void btn_path_Click(object sender, EventArgs e)
