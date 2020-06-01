@@ -11,6 +11,7 @@ using PuppeteerSharp;
 using System.IO;
 using Microsoft.SqlServer.Server;
 using PuppeteerSharp.Media;
+using System.Security.Policy;
 
 namespace ScreenshotBrower.Controls
 {
@@ -161,16 +162,38 @@ namespace ScreenshotBrower.Controls
                             //搜索记录
                             if (saveHis)
                             {
-                                var preurl = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).OrderBy(m => Guid.NewGuid()).Take(6);
-                                foreach (var url in preurl)
+                                var preurl = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).OrderBy(m => Guid.NewGuid()).Take(6).ToList();
+                                for (int i = 0; i < preurl.Count; i++)
                                 {
-                                    await page.GoToAsync(url);
+                                    var url = preurl[i];
+                                    this.Invoke(new MethodInvoker(() =>
+                                    {
+                                        if (toolStripStatus != null)
+                                        {
+                                            toolStripStatus.Text = $"增加浏览记录 {(i + 1)}/{preurl.Count} {url}";
+                                        }
+                                    }));
+
                                 }
                             }
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                if (toolStripStatus != null)
+                                {
+                                    toolStripStatus.Text = $"打开目标页面 " + item.ToString();
+                                }
+                            }));
                             //目标页面
-                            await page.GoToAsync(item.ToString()); 
+                            await page.GoToAsync(item.ToString());
                             if (saveHis)
                             {
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    if (toolStripStatus != null)
+                                    {
+                                        toolStripStatus.Text = $"展示浏览记录";
+                                    }
+                                }));
                                 var result = await page.EvaluateFunctionAsync<string>("()=>{try{window.scrollBy(0,document.querySelector('.navFooterBackToTopText').getBoundingClientRect().top-600);return 1;}catch(ex){console.log(ex);return 0;}}");
                                 await Task.Delay(5000);
                             }
