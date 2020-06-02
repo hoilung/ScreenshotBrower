@@ -136,7 +136,7 @@ namespace ScreenshotBrower.Controls
                         {
                             if (toolStripStatus != null)
                             {
-                                toolStripStatus.Text = "初始化内容,切换地区";
+                                toolStripStatus.Text = "初始化首页内容,开始切换地区";
                             }
                         }));
 
@@ -203,9 +203,9 @@ namespace ScreenshotBrower.Controls
                                 }));
                                 var result = await page.EvaluateFunctionAsync<string>("()=>{try{window.scrollBy(0,document.querySelector('.navFooterBackToTopText').getBoundingClientRect().top-600);return 1;}catch(ex){console.log(ex);return 0;}}");
                                 
-                                await Task.Delay(4000);
+                                await Task.Delay(5000);                                
                                 result = await page.EvaluateFunctionAsync<string>(Properties.Resources.oRandom);
-                                await Task.Delay(2000);
+                                await Task.Delay(3000);
                             }
                             var file = Path.Combine(path, item.AbsolutePath.Replace("/dp/", "").Replace("/", "") + ".pdf");
                             this.Invoke(new MethodInvoker(() =>
