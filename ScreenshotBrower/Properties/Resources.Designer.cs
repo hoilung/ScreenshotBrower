@@ -152,22 +152,26 @@ namespace ScreenshotBrower.Properties {
         /// <summary>
         ///   查找类似 ()=&gt;{
         ///	try{
-        ///		var clicknum=Math.round(Math.random()*10);
-        ///		if(clicknum&gt;8)
-        ///			clicknum=clicknum-2;
+        ///		var clicknum=Math.round(Math.random()*10);		
         ///		var list=document.querySelectorAll(&apos;#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage&apos;);
-        ///		for(var i=0;i&lt;clicknum;i++)
+        ///		if(list.length&gt;2)
         ///		{
-        ///			setTimeout(()=&gt;{
-        ///				document.querySelector(&apos;#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage&apos;).click();
-        ///			},i*500)	
-        ///		}
-        ///		if(list.length&gt;2&amp;&amp; clicknum==1)
-        ///		{
-        ///			list[1].click();
+        ///			if(clicknum==1)
+        ///			{
+        ///				list[0].click();
+        ///			}
+        ///			if(clicknum==2)
+        ///			{			
+        ///				list[1].click();
+        ///			}
         ///		}
         ///		return 1;
-        ///	} [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///	}catch(ex)
+        ///	{	
+        ///		console.log(ex);
+        ///		return 0;
+        ///	}
+        ///} 的本地化字符串。
         /// </summary>
         internal static string oRandom {
             get {
