@@ -150,7 +150,46 @@ namespace ScreenshotBrower.Properties {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 ()=&gt;{
+        ///	try{
+        ///		var clicknum=Math.round(Math.random()*10);
+        ///		if(clicknum&gt;8)
+        ///			clicknum=clicknum-2;
+        ///		var list=document.querySelectorAll(&apos;#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage&apos;);
+        ///		for(var i=0;i&lt;clicknum;i++)
+        ///		{
+        ///			setTimeout(()=&gt;{
+        ///				document.querySelector(&apos;#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage&apos;).click();
+        ///			},i*500)	
+        ///		}
+        ///		if(list.length&gt;2&amp;&amp; clicknum==1)
+        ///		{
+        ///			list[1].click();
+        ///		}
+        ///		return 1;
+        ///	} [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string oRandom {
+            get {
+                return ResourceManager.GetString("oRandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://www.amazon.com/dp/B07D6XQQRY
+        ///https://www.amazon.com/dp/B07KPQKWP2
+        ///https://www.amazon.com/dp/B0843HCT63
+        ///https://www.amazon.com/dp/B081YSP2WY
+        ///https://www.amazon.com/dp/B01J3BIH2Y
+        ///https://www.amazon.com/dp/B00YFHOAHS
+        ///https://www.amazon.com/dp/B00PYM7QEW
+        ///https://www.amazon.com/dp/B07ZS2ND6J
+        ///https://www.amazon.com/dp/B07YKTYZJ6
+        ///https://www.amazon.com/dp/B00SZDHI72
+        ///https://www.amazon.com/dp/B01ENU0V5Q
+        ///https://www.amazon.com/dp/B07NCCNNXN
+        ///https://www.amazon.com/dp/B087YCZR73
+        ///https://www.amazon [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string preload {
             get {

@@ -171,6 +171,32 @@
 }</value>
     <comment>修改邮编</comment>
   </data>
+  <data name="oRandom" xml:space="preserve">
+    <value>()=&gt;{
+	try{
+		var clicknum=Math.round(Math.random()*10);
+		if(clicknum&gt;8)
+			clicknum=clicknum-2;
+		var list=document.querySelectorAll('#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage');
+		for(var i=0;i&lt;clicknum;i++)
+		{
+			setTimeout(()=&gt;{
+				document.querySelector('#rhf-container  a.a-button.a-button-image.a-carousel-button.a-carousel-goto-nextpage').click();
+			},i*500)	
+		}
+		if(list.length&gt;2&amp;&amp; clicknum==1)
+		{
+			list[1].click();
+		}
+		return 1;
+	}catch(ex)
+	{	
+		console.log(ex);
+		return 0;
+	}
+}</value>
+    <comment>推荐随机点击</comment>
+  </data>
   <data name="preload" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\preload.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
   </data>
