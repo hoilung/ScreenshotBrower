@@ -106,6 +106,7 @@ namespace ScreenshotBrower.Controls
                 {
                     UserDataDir = $"{System.IO.Directory.GetCurrentDirectory()}/UserData",
                     Headless = true,
+                    DefaultViewport=null,
                     Args = new[] {
                         "--no-sandbox",
                         "--disable-setuid-sandbox",
