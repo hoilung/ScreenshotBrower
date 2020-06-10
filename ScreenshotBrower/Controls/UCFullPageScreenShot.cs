@@ -110,7 +110,8 @@ namespace ScreenshotBrower.Controls
                     Args = new[] {
                         "--no-sandbox",
                         "--disable-setuid-sandbox",
-                        "--lang=en-US,en"
+                        "--lang=en-US,en",
+                        "--start-maximized"
                         //    "--disable-dev-shm-usage",
                         //   "--disable-extensions",
                         //  "--disable-gpu",
