@@ -585,7 +585,7 @@ namespace ScreenshotBrower
         }
 
 
-        public bool ChangeOrder(string asin, string startTime, string endTime, string num)
+        public bool ChangeOrder(string asin, string startTime, string endTime, string num, string sku = "")
         {
 
             this.Invoke(new MethodInvoker(() =>
@@ -599,6 +599,11 @@ namespace ScreenshotBrower
             }
             try
             {
+                if (string.IsNullOrEmpty(sku))
+                {
+                    sku = shopinfo.data.sku + new Random().Next(10000, 99999);
+                }
+
                 var client = new RestClient();
                 client.CookieContainer = CookieContainer;
                 var request = new RestRequest();
@@ -611,7 +616,7 @@ namespace ScreenshotBrower
                 request.AddParameter("order[page_img]", shopinfo.data.imgfirst);
                 request.AddParameter("order[info]", shopinfo.data.title);
                 request.AddParameter("order[asin]", asin);
-                request.AddParameter("order[sku]", shopinfo.data.sku + new Random().Next(10000, 99999));
+                request.AddParameter("order[sku]", sku);
                 request.AddParameter("order[issuer]", shopinfo.data.sku);
                 request.AddParameter("order[num]", "1");
                 request.AddParameter("order[money]", shopinfo.data.price.Replace("$", ""));
@@ -768,6 +773,7 @@ namespace ScreenshotBrower
                     bulidModel.orderModel.startTime = item.SubItems[8].Text;
                     bulidModel.orderModel.endTime = item.SubItems[9].Text;
                     bulidModel.orderModel.OrderNum = item.SubItems[10].Text;
+                    bulidModel.orderModel.Sku = item.SubItems[11].Text;
 
                     list.Add(bulidModel);
                 }
@@ -806,7 +812,7 @@ namespace ScreenshotBrower
                     {
                         toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
                     }));
-                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum);
+                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum, item.orderModel.Sku);
 
                     if (shopstatus && orderstat)
                     {

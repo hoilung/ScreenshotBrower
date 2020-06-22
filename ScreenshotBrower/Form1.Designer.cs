@@ -78,6 +78,7 @@
             this.tbx_adminurl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
@@ -291,7 +292,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(668, 369);
+            this.groupBox1.Size = new System.Drawing.Size(678, 369);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "生成设置";
@@ -314,7 +315,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(674, 375);
+            this.tabPage1.Size = new System.Drawing.Size(684, 375);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "订单截图";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -326,7 +327,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(674, 375);
+            this.tabPage2.Size = new System.Drawing.Size(684, 375);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "订单网站设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -354,7 +355,8 @@
             this.columnHeader8,
             this.columnHeader9,
             this.columnHeader10,
-            this.columnHeader11});
+            this.columnHeader11,
+            this.columnHeader12});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -398,6 +400,7 @@
             // columnHeader8
             // 
             this.columnHeader8.Text = "Asin";
+            this.columnHeader8.Width = 50;
             // 
             // columnHeader9
             // 
@@ -543,6 +546,10 @@
             this.tabPage3.Text = "全网页截图";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "SKU";
+            // 
             // ucFullPageScreenShot1
             // 
             this.ucFullPageScreenShot1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -636,6 +643,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TabPage tabPage3;
         private Controls.UCFullPageScreenShot ucFullPageScreenShot1;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
     }
 }
 

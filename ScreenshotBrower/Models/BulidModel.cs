@@ -36,5 +36,6 @@ namespace ScreenshotBrower.Models
         public string Asin { get; set; }
 
         public string OrderNum { get; set; }
+        public string Sku { get; internal set; }
     }
 }
