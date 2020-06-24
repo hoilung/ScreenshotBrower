@@ -30,6 +30,9 @@
         {
             this.tbx_urls = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbx_pagetype = new System.Windows.Forms.ComboBox();
+            this.cbx_his = new System.Windows.Forms.CheckBox();
             this.cbx_city = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_start = new System.Windows.Forms.Button();
@@ -42,7 +45,6 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbx_his = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -61,6 +63,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.cbx_pagetype);
             this.groupBox2.Controls.Add(this.cbx_his);
             this.groupBox2.Controls.Add(this.cbx_city);
             this.groupBox2.Controls.Add(this.label2);
@@ -71,23 +75,62 @@
             this.groupBox2.Controls.Add(this.tbx_path);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(3, 188);
+            this.groupBox2.Location = new System.Drawing.Point(3, 208);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(629, 156);
+            this.groupBox2.Size = new System.Drawing.Size(642, 175);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "操作选项";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "纸张尺寸：";
+            // 
+            // cbx_pagetype
+            // 
+            this.cbx_pagetype.DisplayMember = "A2";
+            this.cbx_pagetype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_pagetype.FormattingEnabled = true;
+            this.cbx_pagetype.Items.AddRange(new object[] {
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A5",
+            "A5",
+            "A6"});
+            this.cbx_pagetype.Location = new System.Drawing.Point(85, 25);
+            this.cbx_pagetype.Name = "cbx_pagetype";
+            this.cbx_pagetype.Size = new System.Drawing.Size(83, 20);
+            this.cbx_pagetype.TabIndex = 11;
+            // 
+            // cbx_his
+            // 
+            this.cbx_his.AutoSize = true;
+            this.cbx_his.Checked = true;
+            this.cbx_his.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbx_his.Location = new System.Drawing.Point(276, 27);
+            this.cbx_his.Name = "cbx_his";
+            this.cbx_his.Size = new System.Drawing.Size(96, 16);
+            this.cbx_his.TabIndex = 10;
+            this.cbx_his.Text = "展示浏览记录";
+            this.cbx_his.UseVisualStyleBackColor = true;
             // 
             // cbx_city
             // 
             this.cbx_city.AutoSize = true;
             this.cbx_city.Checked = true;
             this.cbx_city.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_city.Location = new System.Drawing.Point(445, 30);
+            this.cbx_city.Location = new System.Drawing.Point(174, 27);
             this.cbx_city.Name = "cbx_city";
-            this.cbx_city.Size = new System.Drawing.Size(72, 16);
+            this.cbx_city.Size = new System.Drawing.Size(96, 16);
             this.cbx_city.TabIndex = 9;
-            this.cbx_city.Text = "切换地区";
+            this.cbx_city.Text = "随机切换地区";
             this.cbx_city.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -95,7 +138,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(14, 99);
+            this.label2.Location = new System.Drawing.Point(14, 117);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(581, 36);
             this.label2.TabIndex = 8;
@@ -103,7 +146,7 @@
             // 
             // btn_start
             // 
-            this.btn_start.Location = new System.Drawing.Point(448, 64);
+            this.btn_start.Location = new System.Drawing.Point(493, 88);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(75, 23);
             this.btn_start.TabIndex = 7;
@@ -116,7 +159,7 @@
             this.cbx_text.AutoSize = true;
             this.cbx_text.Checked = true;
             this.cbx_text.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_text.Location = new System.Drawing.Point(367, 30);
+            this.cbx_text.Location = new System.Drawing.Point(415, 55);
             this.cbx_text.Name = "cbx_text";
             this.cbx_text.Size = new System.Drawing.Size(72, 16);
             this.cbx_text.TabIndex = 6;
@@ -125,14 +168,14 @@
             // 
             // tbx_text
             // 
-            this.tbx_text.Location = new System.Drawing.Point(85, 28);
+            this.tbx_text.Location = new System.Drawing.Point(85, 55);
             this.tbx_text.Name = "tbx_text";
-            this.tbx_text.Size = new System.Drawing.Size(276, 21);
+            this.tbx_text.Size = new System.Drawing.Size(317, 21);
             this.tbx_text.TabIndex = 5;
             // 
             // btn_path
             // 
-            this.btn_path.Location = new System.Drawing.Point(367, 64);
+            this.btn_path.Location = new System.Drawing.Point(412, 86);
             this.btn_path.Name = "btn_path";
             this.btn_path.Size = new System.Drawing.Size(75, 23);
             this.btn_path.TabIndex = 4;
@@ -142,16 +185,16 @@
             // 
             // tbx_path
             // 
-            this.tbx_path.Location = new System.Drawing.Point(85, 65);
+            this.tbx_path.Location = new System.Drawing.Point(85, 88);
             this.tbx_path.Name = "tbx_path";
             this.tbx_path.ReadOnly = true;
-            this.tbx_path.Size = new System.Drawing.Size(276, 21);
+            this.tbx_path.Size = new System.Drawing.Size(317, 21);
             this.tbx_path.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 31);
+            this.label3.Location = new System.Drawing.Point(14, 58);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 2;
@@ -160,7 +203,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 69);
+            this.label1.Location = new System.Drawing.Point(14, 92);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
@@ -187,20 +230,8 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 51.78571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.21429F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(670, 358);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(670, 396);
             this.tableLayoutPanel1.TabIndex = 4;
-            // 
-            // cbx_his
-            // 
-            this.cbx_his.AutoSize = true;
-            this.cbx_his.Checked = true;
-            this.cbx_his.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_his.Location = new System.Drawing.Point(523, 30);
-            this.cbx_his.Name = "cbx_his";
-            this.cbx_his.Size = new System.Drawing.Size(72, 16);
-            this.cbx_his.TabIndex = 10;
-            this.cbx_his.Text = "保留记录";
-            this.cbx_his.UseVisualStyleBackColor = true;
             // 
             // UCFullPageScreenShot
             // 
@@ -208,7 +239,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "UCFullPageScreenShot";
-            this.Size = new System.Drawing.Size(695, 394);
+            this.Size = new System.Drawing.Size(695, 430);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -234,5 +265,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox cbx_his;
+        private System.Windows.Forms.ComboBox cbx_pagetype;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -23,7 +23,7 @@ namespace ScreenshotBrower.Controls
             tableLayoutPanel1.Dock = groupBox1.Dock = groupBox2.Dock = DockStyle.Fill;
             tbx_text.Text = DateTime.Now.ToString("yyyy/MM/dd");
 
-
+            cbx_pagetype.SelectedIndex = 2;
             this.Load += UCFullPageScreenShot_Load;
         }
 
@@ -80,7 +80,10 @@ namespace ScreenshotBrower.Controls
             progressBar.Value = 0;
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
-            Task.Run(() => BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked));
+
+            Task.Run(() =>
+                BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(cbx_pagetype.SelectedIndex)
+            ));
 
         }
 
@@ -92,7 +95,7 @@ namespace ScreenshotBrower.Controls
         /// <param name="changeCity">切换城市</param>
         /// <param name="addText">添加页眉/页脚内容</param>
         /// <returns></returns>
-        private async Task BulidPdfAsync(Uri[] urls, string path, bool changeCity, string addText, bool saveHis)
+        private async Task BulidPdfAsync(Uri[] urls, string path, bool changeCity, string addText, bool saveHis, PaperFormat paperFormat)
         {
 
             try
@@ -106,7 +109,7 @@ namespace ScreenshotBrower.Controls
                 {
                     UserDataDir = $"{System.IO.Directory.GetCurrentDirectory()}/UserData",
                     Headless = true,
-                    DefaultViewport=null,
+                    DefaultViewport = null,
                     Args = new[] {
                         "--no-sandbox",
                         "--disable-setuid-sandbox",
@@ -207,9 +210,9 @@ namespace ScreenshotBrower.Controls
 
                                 await Task.Delay(3000);
                                 result = await page.EvaluateFunctionAsync<string>(Properties.Resources.oRandom);
-                                await Task.Delay(5000);                                
-                                
-                                
+                                await Task.Delay(5000);
+
+
                             }
                             var file = Path.Combine(path, item.AbsolutePath.Replace("/dp/", "").Replace("/", "") + ".pdf");
                             this.Invoke(new MethodInvoker(() =>
@@ -233,7 +236,7 @@ namespace ScreenshotBrower.Controls
                                     Right = "30"
 
                                 },
-                                Format = PaperFormat.A4
+                                Format = paperFormat
 
                             });
                             count += 1;
@@ -283,7 +286,29 @@ namespace ScreenshotBrower.Controls
 
 
 
+        public PaperFormat GetPaperFormat(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return PaperFormat.A0;
+                case 1:
+                    return PaperFormat.A1;
+                case 2:
+                    return PaperFormat.A2;
+                case 3:
+                    return PaperFormat.A3;
+                case 4:
+                    return PaperFormat.A4;
+                case 5:
+                    return PaperFormat.A5;
+                case 6:
+                    return PaperFormat.A6;
+                default:
+                    return PaperFormat.A2;
 
+            }
+        }
 
     }
 }
