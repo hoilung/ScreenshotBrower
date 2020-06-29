@@ -196,8 +196,8 @@ namespace ScreenshotBrower.Controls
                                 }
                             }));
                             //目标页面
-                            await page.GoToAsync(item.ToString());
-                            await page.EvaluateFunctionAsync<string>("()=>{try{document.querySelector('#productTitle').click();return 1;}catch(ex){return 0;}}");
+                            await page.GoToAsync(item.ToString());                            
+                            await page.EvaluateFunctionAsync<string>("()=>{try{document.querySelector('#productTitle').click(); document.querySelector('.nav-signin-tt.nav-flyout').remove();return 1;}catch(ex){return 0;}}");
                             if (saveHis)
                             {
                                 this.Invoke(new MethodInvoker(() =>
