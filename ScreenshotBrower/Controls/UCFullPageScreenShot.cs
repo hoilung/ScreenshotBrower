@@ -181,7 +181,7 @@ namespace ScreenshotBrower.Controls
                                     {
                                         if (toolStripStatus != null)
                                         {
-                                            toolStripStatus.Text = $"增加浏览记录 {(i + 1)}/{preurl.Count} {url}";
+                                            toolStripStatus.Text = $"增加浏览记录 {(i + 1)}/{preurl.Count}";
                                         }
                                     }));
                                     await page.GoToAsync(url);
