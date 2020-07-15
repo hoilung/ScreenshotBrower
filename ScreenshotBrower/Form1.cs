@@ -491,6 +491,7 @@ namespace ScreenshotBrower
         private bool LoginState;
         private Uri LoginUri;
         private CookieContainer CookieContainer;
+        private string SpiderUri = "127.0.0.1";
 
         private void btn_login_Click(object sender, EventArgs e)
         {
@@ -504,7 +505,6 @@ namespace ScreenshotBrower
             var loginurl = tbx_adminurl.Text.Trim();
             var username = tbx_loginname.Text.Trim();
             var userpass = tbx_userpass.Text.Trim();
-
             if (!loginurl.StartsWith("http:"))
             {
                 MessageBox.Show("请正确填写后台登录地址");
@@ -521,15 +521,16 @@ namespace ScreenshotBrower
                 return;
             }
 
+
             try
             {
                 LoginUri = new Uri(loginurl);
-
                 var client = new RestClient();
                 client.CookieContainer = new CookieContainer();
                 //     client.UseNewtonsoftJson();
-                client.BaseUrl = LoginUri;
+                //client.BaseUrl = LoginUri;
                 var request = new RestRequest();
+                request.Resource = LoginUri.ToString();
                 //  request.Resource = "login";
                 request.AddHeader("Accept", "application/json");
                 //request.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -554,6 +555,20 @@ namespace ScreenshotBrower
                 LoginState = true;
                 CookieContainer = client.CookieContainer;
                 MessageBox.Show("登录成功，进行批量生成操作之前，请先配置截图设置", "提示");
+
+                var request2 = new RestRequest();
+                request2.Resource = "http://" + LoginUri.Host + "/ip.php";
+                var resp2 = client.Get(request2);
+                if (resp2.IsSuccessful)
+                {
+                    SpiderUri = resp2.Content;
+                }
+                else
+                {
+                    MessageBox.Show("登录成功，但是获取抓取详情地址失败，请检查网站是否正常", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -650,7 +665,7 @@ namespace ScreenshotBrower
             var result = new Result<ShopModel>();
             var client = new RestClient();
             var request = new RestRequest();
-            request.Resource = $"http://47.254.92.81/1.php?asin={asin}";
+            request.Resource = $"http://{SpiderUri}/1.php?asin={asin}";
 
             var resp = client.Get(request);
             if (resp.IsSuccessful)

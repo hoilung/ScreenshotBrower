@@ -153,7 +153,7 @@ namespace ScreenshotBrower.Controls
                     }
                     int count = 0;
 
-
+                   var prelist= Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var item in urls)
                     {
                         var ht = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
@@ -173,7 +173,7 @@ namespace ScreenshotBrower.Controls
                             //搜索记录
                             if (saveHis)
                             {
-                                var preurl = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).OrderBy(m => Guid.NewGuid()).Take(6).ToList();
+                                var preurl = prelist.OrderBy(m => Guid.NewGuid()).Take(6).ToList();
                                 for (int i = 0; i < preurl.Count; i++)
                                 {
                                     var url = preurl[i];

@@ -65,6 +65,7 @@
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btn_build = new System.Windows.Forms.Button();
@@ -78,7 +79,6 @@
             this.tbx_adminurl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
@@ -414,6 +414,10 @@
             // 
             this.columnHeader11.Text = "订单数";
             // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "SKU";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label9);
@@ -438,7 +442,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(323, 23);
+            this.label9.Location = new System.Drawing.Point(324, 26);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(329, 12);
             this.label9.TabIndex = 10;
@@ -531,9 +535,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 26);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.Size = new System.Drawing.Size(65, 12);
             this.label6.TabIndex = 0;
-            this.label6.Text = "地址：";
+            this.label6.Text = "后台地址：";
             // 
             // tabPage3
             // 
@@ -545,10 +549,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "全网页截图";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "SKU";
             // 
             // ucFullPageScreenShot1
             // 
