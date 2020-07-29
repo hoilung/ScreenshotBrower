@@ -187,6 +187,11 @@
 				list[1].click();
 			}
 		}
+		var asin7=document.querySelector('.rhf-footer [aria-posinset="7"]')
+		if(asin7!=null)
+		{
+			asin7.remove();
+		}
 		return 1;
 	}catch(ex)
 	{	

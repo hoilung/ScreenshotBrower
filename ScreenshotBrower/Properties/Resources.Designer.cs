@@ -165,13 +165,16 @@ namespace ScreenshotBrower.Properties {
         ///				list[1].click();
         ///			}
         ///		}
+        ///		var asin7=document.querySelector(&apos;.rhf-footer [aria-posinset=&quot;7&quot;]&apos;)
+        ///		if(asin7!=null)
+        ///		{
+        ///			asin7.remove();
+        ///		}
         ///		return 1;
         ///	}catch(ex)
         ///	{	
         ///		console.log(ex);
-        ///		return 0;
-        ///	}
-        ///} 的本地化字符串。
+        ///		return 0 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string oRandom {
             get {
