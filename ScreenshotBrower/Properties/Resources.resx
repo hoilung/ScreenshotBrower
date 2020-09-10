@@ -166,7 +166,15 @@
 		document.getElementById('GLUXZipUpdate-announce').click();//change
 		},6000);		
 		setTimeout(function(){
-		document.querySelector('button[name="glowDoneButton"]').click()//apply
+		var sbtn=document.querySelector('button[name="glowDoneButton"]');//apply
+		if(sbtn==null)
+		{
+			sbtn=document.getElementById('GLUXConfirmClose');
+		}
+		if(sbtn!=null)
+		{
+			sbtn.click()
+		}
 		},8000);	
 }</value>
     <comment>修改邮编</comment>

@@ -141,7 +141,7 @@ namespace ScreenshotBrower.Properties {
         ///		document.getElementById(&apos;GLUXZipUpdate-announce&apos;).click();//change
         ///		},6000);		
         ///		setTimeout(function(){
-        ///		document.querySelector(&apos;button[nam [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///		var sbtn=document.querySelector(&apos;b [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string oChange {
             get {

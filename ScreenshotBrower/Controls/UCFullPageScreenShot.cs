@@ -81,8 +81,9 @@ namespace ScreenshotBrower.Controls
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
 
+            var pagetype = cbx_pagetype.SelectedIndex;
             Task.Run(() =>
-                BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(cbx_pagetype.SelectedIndex)
+                BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(pagetype)
             ));
 
         }
@@ -114,7 +115,7 @@ namespace ScreenshotBrower.Controls
                         "--no-sandbox",
                         "--disable-setuid-sandbox",
                         "--lang=en-US,en",
-                        "--start-maximized"
+                        "--start-maximized",
                         //    "--disable-dev-shm-usage",
                         //   "--disable-extensions",
                         //  "--disable-gpu",
@@ -122,6 +123,7 @@ namespace ScreenshotBrower.Controls
                         //"--disable-local-storage",
                         // "--no-zygote",
                         // "--disable-bundled-ppapi-flash"
+                        $"--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.{new Random().Next(3000,4000)}.0 Safari/537.36"
                     },
                     IgnoreHTTPSErrors = true,
                 };
@@ -148,12 +150,21 @@ namespace ScreenshotBrower.Controls
                         var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                         var zip = zips.OrderBy(m => Guid.NewGuid()).First();
                         await page.GoToAsync("https://www.amazon.com/");
-                        await page.EvaluateFunctionAsync(Properties.Resources.oChange, zip);
+                        var pagetitle = await page.GetTitleAsync();
+                        try
+                        {
+                            await page.EvaluateFunctionAsync(Properties.Resources.oChange, zip);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, pagetitle);
+                            throw ex;
+                        }
                         await Task.Delay(10000);
                     }
                     int count = 0;
 
-                   var prelist= Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var prelist = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var item in urls)
                     {
                         var ht = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
@@ -196,7 +207,7 @@ namespace ScreenshotBrower.Controls
                                 }
                             }));
                             //目标页面
-                            await page.GoToAsync(item.ToString());                            
+                            await page.GoToAsync(item.ToString());
                             await page.EvaluateFunctionAsync<string>("()=>{try{document.querySelector('#productTitle').click(); document.querySelector('.nav-signin-tt.nav-flyout').remove();return 1;}catch(ex){return 0;}}");
                             if (saveHis)
                             {
