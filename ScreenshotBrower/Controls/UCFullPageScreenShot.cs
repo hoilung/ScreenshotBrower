@@ -88,6 +88,7 @@ namespace ScreenshotBrower.Controls
 
         }
 
+        private readonly string _userAgent = $"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{new Random().Next(79, 84)}.0.{new Random().Next(3000, 4000)}.0 Safari/537.36";
         /// <summary>
         /// 
         /// </summary>
@@ -123,13 +124,22 @@ namespace ScreenshotBrower.Controls
                         //"--disable-local-storage",
                         // "--no-zygote",
                         // "--disable-bundled-ppapi-flash"
-                        $"--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.{new Random().Next(3000,4000)}.0 Safari/537.36"
+                        $"--user-agent={_userAgent}"
                     },
                     IgnoreHTTPSErrors = true,
                 };
                 using (var browser = await Puppeteer.LaunchAsync(option))
                 {
-                    var page = await browser.NewPageAsync();
+                    BrowserContext browserContext = browser.DefaultContext;
+                    if (saveHis)
+                    {
+                        browserContext = await browser.CreateIncognitoBrowserContextAsync();
+
+                    }
+
+                    var page = await browserContext.NewPageAsync();
+
+
                     await page.SetViewportAsync(new ViewPortOptions
                     {
                         Width = Screen.PrimaryScreen.WorkingArea.Width,
@@ -157,7 +167,7 @@ namespace ScreenshotBrower.Controls
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, pagetitle);
+                            MessageBox.Show("访问网址受限,自动切换地区失败,\r\n请等待亚马逊解封或切换新ip后再尝试", pagetitle);
                             throw ex;
                         }
                         await Task.Delay(10000);
@@ -267,11 +277,11 @@ namespace ScreenshotBrower.Controls
                         }
                     }
 
-                    if (saveHis)
-                    {
-                        var ck = await page.GetCookiesAsync("https://www.amazon.com");
-                        await page.DeleteCookieAsync(ck);
-                    }
+                    //if (saveHis)
+                    //{
+                    //    var ck = await page.GetCookiesAsync("https://www.amazon.com");
+                    //    await page.DeleteCookieAsync(ck);
+                    //}
 
 
                     this.Invoke(new MethodInvoker(() =>
