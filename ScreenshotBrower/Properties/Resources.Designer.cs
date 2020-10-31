@@ -61,6 +61,15 @@ namespace ScreenshotBrower.Properties {
         }
         
         /// <summary>
+        ///   查找类似 [{&quot;text&quot;:&quot;Australia&quot;,&quot;id&quot;:&quot;GLUXCountryList_0&quot;},{&quot;text&quot;:&quot;Canada&quot;,&quot;id&quot;:&quot;GLUXCountryList_1&quot;},{&quot;text&quot;:&quot;China&quot;,&quot;id&quot;:&quot;GLUXCountryList_2&quot;},{&quot;text&quot;:&quot;Japan&quot;,&quot;id&quot;:&quot;GLUXCountryList_3&quot;},{&quot;text&quot;:&quot;Mexico&quot;,&quot;id&quot;:&quot;GLUXCountryList_4&quot;},{&quot;text&quot;:&quot;Singapore&quot;,&quot;id&quot;:&quot;GLUXCountryList_5&quot;},{&quot;text&quot;:&quot;United Kingdom&quot;,&quot;id&quot;:&quot;GLUXCountryList_6&quot;},{&quot;text&quot;:&quot;Afghanistan&quot;,&quot;id&quot;:&quot;GLUXCountryList_7&quot;},{&quot;text&quot;:&quot;Aland Islands&quot;,&quot;id&quot;:&quot;GLUXCountryList_8&quot;},{&quot;text&quot;:&quot;Albania&quot;,&quot;id&quot;:&quot;GLUXCountryList_9&quot;},{&quot;text&quot;:&quot;Algeria&quot;,&quot;id&quot;:&quot;GLUXCountryList_10&quot;},{&quot;text&quot;:&quot;Am [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string country {
+            get {
+                return ResourceManager.GetString("country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap detail_head {
@@ -146,6 +155,34 @@ namespace ScreenshotBrower.Properties {
         internal static string oChange {
             get {
                 return ResourceManager.GetString("oChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 function oChange(num)
+        ///{
+        ///		document.getElementById(&apos;nav-packard-glow-loc-icon&apos;).click();//open dialog	
+        ///		setTimeout(function()
+        ///		{
+        ///			document.getElementById(&apos;GLUXCountryList&apos;).click();  //click change
+        ///		},2000);	
+        ///		setTimeout(function(){
+        ///			document.getElementById(num).click();
+        ///		},4000);	
+        ///		
+        ///		setTimeout(function(){
+        ///		var sbtn=document.querySelector(&apos;button[name=&quot;glowDoneButton&quot;]&apos;);//apply
+        ///		if(sbtn==null)
+        ///		{
+        ///			sbtn=document.getElementById(&apos;GLUXConfirmClose&apos;);
+        ///		}
+        ///		if(sbtn!=null)
+        ///		{
+        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string oChange2 {
+            get {
+                return ResourceManager.GetString("oChange2", resourceCulture);
             }
         }
         

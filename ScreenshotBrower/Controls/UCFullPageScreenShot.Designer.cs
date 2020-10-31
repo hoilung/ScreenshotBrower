@@ -30,10 +30,10 @@
         {
             this.tbx_urls = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cb_country = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbx_pagetype = new System.Windows.Forms.ComboBox();
             this.cbx_his = new System.Windows.Forms.CheckBox();
-            this.cbx_city = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_start = new System.Windows.Forms.Button();
             this.cbx_text = new System.Windows.Forms.CheckBox();
@@ -63,10 +63,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cb_country);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.cbx_pagetype);
             this.groupBox2.Controls.Add(this.cbx_his);
-            this.groupBox2.Controls.Add(this.cbx_city);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.btn_start);
             this.groupBox2.Controls.Add(this.cbx_text);
@@ -81,6 +81,15 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "操作选项";
+            // 
+            // cb_country
+            // 
+            this.cb_country.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_country.FormattingEnabled = true;
+            this.cb_country.Location = new System.Drawing.Point(174, 25);
+            this.cb_country.Name = "cb_country";
+            this.cb_country.Size = new System.Drawing.Size(121, 20);
+            this.cb_country.TabIndex = 13;
             // 
             // label4
             // 
@@ -114,24 +123,12 @@
             this.cbx_his.AutoSize = true;
             this.cbx_his.Checked = true;
             this.cbx_his.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_his.Location = new System.Drawing.Point(276, 27);
+            this.cbx_his.Location = new System.Drawing.Point(301, 29);
             this.cbx_his.Name = "cbx_his";
             this.cbx_his.Size = new System.Drawing.Size(96, 16);
             this.cbx_his.TabIndex = 10;
             this.cbx_his.Text = "展示浏览记录";
             this.cbx_his.UseVisualStyleBackColor = true;
-            // 
-            // cbx_city
-            // 
-            this.cbx_city.AutoSize = true;
-            this.cbx_city.Checked = true;
-            this.cbx_city.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_city.Location = new System.Drawing.Point(174, 27);
-            this.cbx_city.Name = "cbx_city";
-            this.cbx_city.Size = new System.Drawing.Size(96, 16);
-            this.cbx_city.TabIndex = 9;
-            this.cbx_city.Text = "随机切换地区";
-            this.cbx_city.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -260,12 +257,12 @@
         private System.Windows.Forms.CheckBox cbx_text;
         private System.Windows.Forms.Button btn_start;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox cbx_city;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox cbx_his;
         private System.Windows.Forms.ComboBox cbx_pagetype;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cb_country;
     }
 }

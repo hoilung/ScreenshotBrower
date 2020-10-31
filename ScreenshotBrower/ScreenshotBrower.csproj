@@ -104,6 +104,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\BulidModel.cs" />
+    <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ShopModel.cs" />
@@ -140,6 +141,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\country.json" />
     <None Include="Resources\order-head.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\zip.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\country.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

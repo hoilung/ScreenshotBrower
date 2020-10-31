@@ -13,10 +13,13 @@ using Microsoft.SqlServer.Server;
 using PuppeteerSharp.Media;
 using System.Security.Policy;
 
+using Newtonsoft.Json;
+
 namespace ScreenshotBrower.Controls
 {
     public partial class UCFullPageScreenShot : UserControl
     {
+        private List<Models.CountryModel> _CountryModels;
         public UCFullPageScreenShot()
         {
             InitializeComponent();
@@ -25,6 +28,16 @@ namespace ScreenshotBrower.Controls
 
             cbx_pagetype.SelectedIndex = 2;
             this.Load += UCFullPageScreenShot_Load;
+
+            
+            _CountryModels = JsonConvert.DeserializeObject<List<Models.CountryModel>>(Properties.Resources.country);
+
+            cb_country.Items.Add("请选择国家地区");
+            foreach (var item in _CountryModels)
+            {
+                cb_country.Items.Add(item.Text);
+            }
+            cb_country.SelectedIndex = 0;
         }
 
         private ToolStripStatusLabel toolStripStatus;
@@ -81,9 +94,10 @@ namespace ScreenshotBrower.Controls
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
 
+            var country = cb_country.Text;
             var pagetype = cbx_pagetype.SelectedIndex;
             Task.Run(() =>
-                BulidPdfAsync(urls.ToArray(), dirpath, cbx_city.Checked, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(pagetype)
+                BulidPdfAsync(urls.ToArray(), dirpath, country, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(pagetype)
             ));
 
         }
@@ -97,7 +111,7 @@ namespace ScreenshotBrower.Controls
         /// <param name="changeCity">切换城市</param>
         /// <param name="addText">添加页眉/页脚内容</param>
         /// <returns></returns>
-        private async Task BulidPdfAsync(Uri[] urls, string path, bool changeCity, string addText, bool saveHis, PaperFormat paperFormat)
+        private async Task BulidPdfAsync(Uri[] urls, string path, string changeCity, string addText, bool saveHis, PaperFormat paperFormat)
         {
 
             try
@@ -147,7 +161,7 @@ namespace ScreenshotBrower.Controls
                     });
 
 
-                    if (changeCity)
+                    if (!changeCity.Contains("请选择") && _CountryModels.Any())
                     {
                         this.Invoke(new MethodInvoker(() =>
                         {
@@ -156,14 +170,18 @@ namespace ScreenshotBrower.Controls
                                 toolStripStatus.Text = "初始化首页内容,开始切换地区";
                             }
                         }));
+                        //var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        //var zip = zips.OrderBy(m => Guid.NewGuid()).First();                       
 
-                        var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                        var zip = zips.OrderBy(m => Guid.NewGuid()).First();
                         await page.GoToAsync("https://www.amazon.com/");
                         var pagetitle = await page.GetTitleAsync();
                         try
                         {
-                            await page.EvaluateFunctionAsync(Properties.Resources.oChange, zip);
+                            var docid = _CountryModels.Find(m => m.Text.Contains(changeCity));
+                            if (docid != null)
+                            {
+                                await page.EvaluateFunctionAsync(Properties.Resources.oChange2, docid.Id);
+                            }
                         }
                         catch (Exception ex)
                         {
