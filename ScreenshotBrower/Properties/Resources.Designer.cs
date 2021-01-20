@@ -47,8 +47,8 @@ namespace ScreenshotBrower.Properties {
         }
         
         /// <summary>
-        ///   重写当前线程的 CurrentUICulture 属性
-        ///   重写当前线程的 CurrentUICulture 属性。
+        ///   重写当前线程的 CurrentUICulture 属性，对
+        ///   使用此强类型资源类的所有资源查找执行重写。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
@@ -123,6 +123,41 @@ namespace ScreenshotBrower.Properties {
         internal static string oAddContent {
             get {
                 return ResourceManager.GetString("oAddContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ()=&gt;{
+        ///    try {
+        ///        document.querySelector(&apos;body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span&apos;).style=&quot;filter:blur(3px)&quot;;
+        ///        document.querySelector(&apos;body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(2) &gt; a&apos;).style=&quot;filter:blur(3px)&quot;
+        ///        return 1;
+        ///    } catch (error) {
+        ///        return 0;
+        ///    }
+        ///
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string oBlurDetail {
+            get {
+                return ResourceManager.GetString("oBlurDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ()=&gt;{
+        ///    try {
+        ///        document.querySelectorAll(&apos;body &gt; div.main &gt; div.main-right &gt; table &gt; tbody &gt; tr &gt; td.details &gt; a:nth-child(3)&apos;).forEach(c =&gt; c.style = &apos;filter:blur(3px)&apos;);
+        ///        return 1;
+        ///    } catch (error) {
+        ///        return 0;
+        ///    }
+        ///
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string oBlurList {
+            get {
+                return ResourceManager.GetString("oBlurList", resourceCulture);
             }
         }
         

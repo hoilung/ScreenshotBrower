@@ -80,6 +80,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
+            this.cbx_blur = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -274,6 +275,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbx_blur);
             this.groupBox1.Controls.Add(this.lb_computerInfo);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.btn_start);
@@ -558,6 +560,17 @@
             this.ucFullPageScreenShot1.Size = new System.Drawing.Size(678, 369);
             this.ucFullPageScreenShot1.TabIndex = 0;
             // 
+            // cbx_blur
+            // 
+            this.cbx_blur.AutoSize = true;
+            this.cbx_blur.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cbx_blur.Location = new System.Drawing.Point(371, 199);
+            this.cbx_blur.Name = "cbx_blur";
+            this.cbx_blur.Size = new System.Drawing.Size(93, 25);
+            this.cbx_blur.TabIndex = 18;
+            this.cbx_blur.Text = "地址打码";
+            this.cbx_blur.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -644,6 +657,7 @@
         private System.Windows.Forms.TabPage tabPage3;
         private Controls.UCFullPageScreenShot ucFullPageScreenShot1;
         private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.CheckBox cbx_blur;
     }
 }
 
