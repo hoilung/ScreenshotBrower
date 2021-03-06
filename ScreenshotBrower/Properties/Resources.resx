@@ -127,6 +127,9 @@
   <data name="favicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\favicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Inventory_head" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Inventory-head.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="list_head" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\list-head.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -157,8 +160,17 @@
   <data name="oBlurDetail" xml:space="preserve">
     <value>()=&gt;{
     try {
-        document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span').style="filter:blur(3px)";
-        document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(2) &gt; a').style="filter:blur(3px)"
+		
+		var addr=document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span');		
+		var index1=addr.innerHTML.indexOf('&lt;br&gt;'); 
+		var index2=addr.innerHTML.lastIndexOf('&lt;br&gt;');		
+		var line1='&lt;c style="filter:blur(3px)"&gt;'+addr.innerHTML.slice(0,index1-6)+"&lt;/c&gt;"+addr.innerHTML.slice(index1-6,index1+4);
+		var line2=addr.innerHTML.slice(index1+4,index1+4+10)+'&lt;c style="filter:blur(3px)"&gt;'+addr.innerHTML.slice(index1+4+10,index2)+'&lt;/c&gt;'+addr.innerHTML.slice(index2);		 
+		
+		addr.innerHTML=line1+line2;		
+    
+        //document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span').style="filter:blur(3px)";
+        //document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(2) &gt; a').style="filter:blur(3px)"        
         return 1;
     } catch (error) {
         return 0;
@@ -166,6 +178,25 @@
 
 }</value>
     <comment>详细页面模糊</comment>
+  </data>
+  <data name="oBlurInvoice" xml:space="preserve">
+    <value>()=&gt;{	
+	try{		
+		var node1=document.querySelector("#imgDiv &gt; table &gt; tbody &gt; tr:nth-child(4) &gt; td:nth-child(1)");
+		var index1=node1.innerHTML.indexOf('&lt;b&gt;Address:&lt;/b&gt;');
+		var index2=node1.innerHTML.indexOf('&lt;b&gt;ZIP:&lt;/b&gt;');
+		var index3=node1.innerHTML.indexOf('&lt;b&gt;Purchase Date:&lt;/b&gt;');
+		var line1=node1.innerHTML.slice(0,index1+15+10)+'&lt;c style="filter:blur(3px)"&gt;'+node1.innerHTML.slice(index1+15+10,index2)+'&lt;/c&gt;';
+		var line2=node1.innerHTML.slice(index2,index2+11)+'&lt;c style="filter:blur(3px)"&gt;'+node1.innerHTML.slice(index2+11,index3)+'&lt;/c&gt;';
+		var line3=node1.innerHTML.slice(index3);
+		node1.innerHTML=line1+line2+line3;
+		return 1;
+	}catch(error)
+	{
+		return 0;
+	}
+	
+}</value>
   </data>
   <data name="oBlurList" xml:space="preserve">
     <value>()=&gt;{

@@ -49,6 +49,7 @@
             this.cbx_invoice = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbx_blur = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -80,7 +81,11 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
-            this.cbx_blur = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbx_BlurDetail = new System.Windows.Forms.CheckBox();
+            this.cbx_Blurinvoice = new System.Windows.Forms.CheckBox();
+            this.cbx_stock = new System.Windows.Forms.CheckBox();
+            this.cbx_SyncStock = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -256,7 +261,7 @@
             // 
             this.cbx_invoice.AutoSize = true;
             this.cbx_invoice.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbx_invoice.Location = new System.Drawing.Point(260, 198);
+            this.cbx_invoice.Location = new System.Drawing.Point(359, 198);
             this.cbx_invoice.Name = "cbx_invoice";
             this.cbx_invoice.Size = new System.Drawing.Size(61, 25);
             this.cbx_invoice.TabIndex = 16;
@@ -275,6 +280,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbx_stock);
+            this.groupBox1.Controls.Add(this.cbx_Blurinvoice);
+            this.groupBox1.Controls.Add(this.cbx_BlurDetail);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.cbx_blur);
             this.groupBox1.Controls.Add(this.lb_computerInfo);
             this.groupBox1.Controls.Add(this.label5);
@@ -298,6 +307,17 @@
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "生成设置";
+            // 
+            // cbx_blur
+            // 
+            this.cbx_blur.AutoSize = true;
+            this.cbx_blur.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cbx_blur.Location = new System.Drawing.Point(134, 237);
+            this.cbx_blur.Name = "cbx_blur";
+            this.cbx_blur.Size = new System.Drawing.Size(93, 25);
+            this.cbx_blur.TabIndex = 18;
+            this.cbx_blur.Text = "列表打码";
+            this.cbx_blur.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -422,6 +442,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbx_SyncStock);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btn_build);
             this.groupBox2.Controls.Add(this.btn_clear);
@@ -453,7 +474,7 @@
             // btn_build
             // 
             this.btn_build.Enabled = false;
-            this.btn_build.Location = new System.Drawing.Point(568, 75);
+            this.btn_build.Location = new System.Drawing.Point(488, 79);
             this.btn_build.Name = "btn_build";
             this.btn_build.Size = new System.Drawing.Size(75, 23);
             this.btn_build.TabIndex = 9;
@@ -463,7 +484,7 @@
             // 
             // btn_clear
             // 
-            this.btn_clear.Location = new System.Drawing.Point(487, 75);
+            this.btn_clear.Location = new System.Drawing.Point(488, 50);
             this.btn_clear.Name = "btn_clear";
             this.btn_clear.Size = new System.Drawing.Size(75, 23);
             this.btn_clear.TabIndex = 8;
@@ -473,7 +494,7 @@
             // 
             // btn_import
             // 
-            this.btn_import.Location = new System.Drawing.Point(406, 75);
+            this.btn_import.Location = new System.Drawing.Point(407, 50);
             this.btn_import.Name = "btn_import";
             this.btn_import.Size = new System.Drawing.Size(75, 23);
             this.btn_import.TabIndex = 7;
@@ -484,7 +505,7 @@
             // btn_login
             // 
             this.btn_login.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btn_login.Location = new System.Drawing.Point(325, 75);
+            this.btn_login.Location = new System.Drawing.Point(326, 50);
             this.btn_login.Name = "btn_login";
             this.btn_login.Size = new System.Drawing.Size(75, 23);
             this.btn_login.TabIndex = 6;
@@ -560,16 +581,58 @@
             this.ucFullPageScreenShot1.Size = new System.Drawing.Size(678, 369);
             this.ucFullPageScreenShot1.TabIndex = 0;
             // 
-            // cbx_blur
+            // label10
             // 
-            this.cbx_blur.AutoSize = true;
-            this.cbx_blur.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.cbx_blur.Location = new System.Drawing.Point(371, 199);
-            this.cbx_blur.Name = "cbx_blur";
-            this.cbx_blur.Size = new System.Drawing.Size(93, 25);
-            this.cbx_blur.TabIndex = 18;
-            this.cbx_blur.Text = "地址打码";
-            this.cbx_blur.UseVisualStyleBackColor = true;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(8, 238);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(122, 21);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "截图打码选项：";
+            // 
+            // cbx_BlurDetail
+            // 
+            this.cbx_BlurDetail.AutoSize = true;
+            this.cbx_BlurDetail.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cbx_BlurDetail.Location = new System.Drawing.Point(243, 237);
+            this.cbx_BlurDetail.Name = "cbx_BlurDetail";
+            this.cbx_BlurDetail.Size = new System.Drawing.Size(93, 25);
+            this.cbx_BlurDetail.TabIndex = 20;
+            this.cbx_BlurDetail.Text = "详情打码";
+            this.cbx_BlurDetail.UseVisualStyleBackColor = true;
+            // 
+            // cbx_Blurinvoice
+            // 
+            this.cbx_Blurinvoice.AutoSize = true;
+            this.cbx_Blurinvoice.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cbx_Blurinvoice.Location = new System.Drawing.Point(359, 237);
+            this.cbx_Blurinvoice.Name = "cbx_Blurinvoice";
+            this.cbx_Blurinvoice.Size = new System.Drawing.Size(93, 25);
+            this.cbx_Blurinvoice.TabIndex = 21;
+            this.cbx_Blurinvoice.Text = "发票打码";
+            this.cbx_Blurinvoice.UseVisualStyleBackColor = true;
+            // 
+            // cbx_stock
+            // 
+            this.cbx_stock.AutoSize = true;
+            this.cbx_stock.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbx_stock.Location = new System.Drawing.Point(243, 198);
+            this.cbx_stock.Name = "cbx_stock";
+            this.cbx_stock.Size = new System.Drawing.Size(93, 25);
+            this.cbx_stock.TabIndex = 22;
+            this.cbx_stock.Text = "订单库存";
+            this.cbx_stock.UseVisualStyleBackColor = true;
+            // 
+            // cbx_SyncStock
+            // 
+            this.cbx_SyncStock.AutoSize = true;
+            this.cbx_SyncStock.Location = new System.Drawing.Point(329, 82);
+            this.cbx_SyncStock.Name = "cbx_SyncStock";
+            this.cbx_SyncStock.Size = new System.Drawing.Size(72, 16);
+            this.cbx_SyncStock.TabIndex = 11;
+            this.cbx_SyncStock.Text = "同步库存";
+            this.cbx_SyncStock.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -658,6 +721,11 @@
         private Controls.UCFullPageScreenShot ucFullPageScreenShot1;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.CheckBox cbx_blur;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox cbx_BlurDetail;
+        private System.Windows.Forms.CheckBox cbx_Blurinvoice;
+        private System.Windows.Forms.CheckBox cbx_stock;
+        private System.Windows.Forms.CheckBox cbx_SyncStock;
     }
 }
 

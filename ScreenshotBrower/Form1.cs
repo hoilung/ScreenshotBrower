@@ -49,6 +49,8 @@ namespace ScreenshotBrower
             var taskMax = tb_num.Value;
             var button = sender as Button;
             var addrblur = cbx_blur.Checked;
+            var detailblur = cbx_BlurDetail.Checked;
+            var invoiceblur = cbx_Blurinvoice.Checked;
 
             Task.Run(async () =>
             {
@@ -129,8 +131,10 @@ namespace ScreenshotBrower
 
                     }
                 }
+                //获得详细页面链接
                 var orderList = GetOdrderList(html, new Uri(page.Url));
                 orderList.OrderPase();
+                //列表截图
                 if (cbx_list.Checked)
                 {
 
@@ -154,6 +158,34 @@ namespace ScreenshotBrower
                         this.MergeImage(Properties.Resources.list_head, listiamge, listname);
                     };
                 }
+                //库存截图
+                if (cbx_stock.Checked)
+                {
+                    await page.GoToAsync(tbx_order.Text + "/kucun/index");
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripProgressBar1.Value = 0;
+                        toolStripProgressBar1.Maximum = taskMax;
+                        toolStripStatusLabel1.Text = "正在生成库存截图";
+                    }));
+
+                    var stockname = newdir + "/inventory.png";
+                    using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                    {
+                        FullPage = true,
+                        Type = ScreenshotType.Png
+                    }))
+                    {
+                        var urltext = $"https://sellercentral.amazon.com/hz/inventory/view/FBAKNIGHTS/ref=xx_fbamnginv_dnav_xx?tbla_myitable=sort:{{\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"}};search:{orderList.Asin}";
+                        //合并头
+                        var stockImage = Image.FromStream(liststream);
+                        var detailheaderImage = this.ReWirteImage(Properties.Resources.Inventory_head, urltext);
+                        //合并文件
+                        MergeImage(detailheaderImage, stockImage, stockname);
+                    };
+                }
+
+
                 var domainUrl = orderList.OrderLink;
                 //var topList = orderList.Orders.OrderBy(m => Guid.NewGuid()).Take(taskMax).ToList();
                 var topList = new List<OrderModel>();
@@ -182,10 +214,11 @@ namespace ScreenshotBrower
                             Height = Screen.PrimaryScreen.WorkingArea.Height
                         });
                         await page.GoToAsync(navurl.ToString());
-                        if (addrblur)
+                        if (detailblur)
                         {
                             try
                             {
+                                //详情地址模糊
                                 await page.EvaluateFunctionAsync(Properties.Resources.oBlurDetail);
                             }
                             catch (Exception)
@@ -223,6 +256,19 @@ namespace ScreenshotBrower
                                 Height = 768
                             });
                             await page.GoToAsync(navurl.ToString());
+                            if (invoiceblur)
+                            {
+                                try
+                                {
+                                    //发票模糊
+                                    await page.EvaluateFunctionAsync(Properties.Resources.oBlurInvoice);
+                                }
+                                catch (Exception)
+                                {
+                                    throw;
+                                }
+                            }
+
                             var invoicename = newdir + $"/invoice-{item.DetailNum}.png";
                             await page.ScreenshotAsync(invoicename, new ScreenshotOptions()
                             {

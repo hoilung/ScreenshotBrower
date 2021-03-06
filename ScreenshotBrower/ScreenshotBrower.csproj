@@ -194,5 +194,8 @@
   <ItemGroup>
     <None Include="Resources\country.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Inventory-head.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

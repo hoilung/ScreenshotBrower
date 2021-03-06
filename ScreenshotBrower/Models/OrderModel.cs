@@ -38,6 +38,9 @@ namespace ScreenshotBrower.Models
 
             }
         }
+
+
+
     }
 
     public class OdrderList
@@ -45,7 +48,10 @@ namespace ScreenshotBrower.Models
         public string OrderLink { get; set; } = string.Empty;
         public string OrderHtml { get; set; } = string.Empty;
 
+        public string Asin { get; set; } = string.Empty;
+
         public List<OrderModel> Orders { get; set; } = new List<OrderModel>();
+
 
         public void OrderPase()
         {
@@ -64,8 +70,14 @@ namespace ScreenshotBrower.Models
                     orderModel.DetailNum = item.InnerText.Trim();
                     this.Orders.Add(orderModel);
                 }
-
             }
+
+            var asinNode = htmldoc.DocumentNode.SelectSingleNode("/html/body/div[4]/div[2]/table/tbody/tr/td[5]/p[1]");
+            if (asinNode != null)
+            {
+                this.Asin = asinNode.InnerText;
+            }
+
         }
     }
 }
