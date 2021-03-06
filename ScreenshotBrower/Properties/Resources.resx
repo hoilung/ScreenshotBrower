@@ -154,6 +154,31 @@
 }</value>
     <comment>增加页面内容</comment>
   </data>
+  <data name="oBlurDetail" xml:space="preserve">
+    <value>()=&gt;{
+    try {
+        document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span').style="filter:blur(3px)";
+        document.querySelector('body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(2) &gt; a').style="filter:blur(3px)"
+        return 1;
+    } catch (error) {
+        return 0;
+    }
+
+}</value>
+    <comment>详细页面模糊</comment>
+  </data>
+  <data name="oBlurList" xml:space="preserve">
+    <value>()=&gt;{
+    try {
+        document.querySelectorAll('body &gt; div.main &gt; div.main-right &gt; table &gt; tbody &gt; tr &gt; td.details &gt; a:nth-child(3)').forEach(c =&gt; c.style = 'filter:blur(3px)');
+        return 1;
+    } catch (error) {
+        return 0;
+    }
+
+}</value>
+    <comment>列表模糊</comment>
+  </data>
   <data name="oChange" xml:space="preserve">
     <value>function oChange(num)
 {

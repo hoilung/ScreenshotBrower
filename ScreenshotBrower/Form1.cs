@@ -48,6 +48,8 @@ namespace ScreenshotBrower
             var dirBase = tbx_path.Text;
             var taskMax = tb_num.Value;
             var button = sender as Button;
+            var addrblur = cbx_blur.Checked;
+
             Task.Run(async () =>
             {
 
@@ -116,6 +118,17 @@ namespace ScreenshotBrower
                 //每次重新加载列表页面,获得最新内容
                 await page.GoToAsync(tbx_order.Text);
                 var html = await page.GetContentAsync();
+                if (addrblur)
+                {
+                    try
+                    {   //地址信息模糊
+                        await page.EvaluateFunctionAsync(Properties.Resources.oBlurList);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
                 var orderList = GetOdrderList(html, new Uri(page.Url));
                 orderList.OrderPase();
                 if (cbx_list.Checked)
@@ -169,6 +182,18 @@ namespace ScreenshotBrower
                             Height = Screen.PrimaryScreen.WorkingArea.Height
                         });
                         await page.GoToAsync(navurl.ToString());
+                        if (addrblur)
+                        {
+                            try
+                            {
+                                await page.EvaluateFunctionAsync(Properties.Resources.oBlurDetail);
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
+                        }
                         var detailname = newdir + $"/detail-{item.DetailNum}.jpg";
                         using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
                         {
