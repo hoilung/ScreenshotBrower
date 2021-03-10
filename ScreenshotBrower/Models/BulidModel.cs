@@ -37,5 +37,9 @@ namespace ScreenshotBrower.Models
 
         public string OrderNum { get; set; }
         public string Sku { get; internal set; }
+        /// <summary>
+        /// 货运价格
+        /// </summary>
+        public string HyPrice { get; set; }
     }
 }

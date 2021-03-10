@@ -569,7 +569,7 @@ namespace ScreenshotBrower
 
 
 #if DEBUG
-            tbx_adminurl.Text = "http://139.129.97.67/site/login";
+            tbx_adminurl.Text = "http://47.92.99.30/site/login";
             tbx_loginname.Text = "admin";
             tbx_userpass.Text = "amaz123456";
 #endif
@@ -671,7 +671,7 @@ namespace ScreenshotBrower
         }
 
 
-        public bool ChangeOrder(string asin, string startTime, string endTime, string num, string sku = "")
+        public bool ChangeOrder(string asin, string startTime, string endTime, string num, string sku = "", bool syncStock = false, string hyPrice = "0")
         {
 
             this.Invoke(new MethodInvoker(() =>
@@ -681,10 +681,16 @@ namespace ScreenshotBrower
             var shopinfo = GetShopInfo(asin);
             if (!shopinfo.state)
             {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    toolStripStatusLabel1.Text += $"获取商品详情失败，请更换ip";
+                }));
                 return false;
             }
             try
             {
+
+
                 if (string.IsNullOrEmpty(sku))
                 {
                     sku = shopinfo.data.sku + new Random().Next(10000, 99999);
@@ -692,6 +698,52 @@ namespace ScreenshotBrower
 
                 var client = new RestClient();
                 client.CookieContainer = CookieContainer;
+
+                #region 同步库存
+
+                if (syncStock)
+                {
+                    var request2 = new RestRequest();
+                    request2.Resource = $"http://{LoginUri.Host}/kucun/add";
+                    //start_date=&end_date=&imgurl=&title=&asin=&sku=&issuer=&num=1&price=&fnsku=&jg=&do_clear=on
+                    request2.AddParameter("start_date", startTime);
+                    request2.AddParameter("end_date", endTime);
+                    request2.AddParameter("imgurl", shopinfo.data.imgfirst);
+                    request2.AddParameter("title", shopinfo.data.title);
+                    request2.AddParameter("asin", asin);
+                    request2.AddParameter("sku", sku);
+                    request2.AddParameter("issuer", shopinfo.data.sku);
+                    request2.AddParameter("num", "1");
+                    request2.AddParameter("price", shopinfo.data.price.Replace("$", ""));
+
+                    var arr = new[] {
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65)
+                    };
+
+                    var tmp = Convert.ToString(System.Text.Encoding.ASCII.GetString(arr));
+                    tmp = tmp.Insert(5, new Random().Next(0, 10).ToString());
+                    var fnsku = string.Concat("X002", tmp);
+
+                    request2.AddParameter("fnsku", fnsku);
+                    request2.AddParameter("jg", hyPrice);//货运价格
+                    request2.AddParameter("do_clear", "on");
+                    var resp2 = client.Post(request2);
+                    if (resp2.IsSuccessful)
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            toolStripStatusLabel1.Text += $"同步库存信息";
+                        }));
+                    }
+                }
+                #endregion
+
+                #region 生成订单
                 var request = new RestRequest();
                 request.Resource = $"http://{LoginUri.Host}/order/create";
 
@@ -712,9 +764,15 @@ namespace ScreenshotBrower
                 var resp = client.Post(request);
                 if (resp.IsSuccessful)
                 {
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        toolStripStatusLabel1.Text += $"生成订单";
+                    }));
+
                     var result = JsonConvert.DeserializeObject<CreateResult>(resp.Content);
                     return result.code == 200;
                 }
+                #endregion
             }
             catch (Exception ex)
             {
@@ -845,7 +903,7 @@ namespace ScreenshotBrower
                     shopModel = new BulidShopModel()
                 };
                 var item = listView1.Items[i];
-                if (item.SubItems.Count > 10)
+                if (item.SubItems.Count > 12)
                 {
                     bulidModel.shopModel.address = item.SubItems[3].Text;
                     bulidModel.shopModel.email = item.SubItems[4].Text;
@@ -860,6 +918,7 @@ namespace ScreenshotBrower
                     bulidModel.orderModel.endTime = item.SubItems[9].Text;
                     bulidModel.orderModel.OrderNum = item.SubItems[10].Text;
                     bulidModel.orderModel.Sku = item.SubItems[11].Text;
+                    bulidModel.orderModel.HyPrice = item.SubItems[12].Text;
 
                     list.Add(bulidModel);
                 }
@@ -873,6 +932,7 @@ namespace ScreenshotBrower
             var successNum = 0;
 
             btn_build.Enabled = false;
+            var syncStock = cbx_SyncStock.Checked;//同步库存
             Task.Run(async () =>
             {
                 for (int i = 0; i < list.Count; i++)
@@ -898,7 +958,7 @@ namespace ScreenshotBrower
                     {
                         toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
                     }));
-                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum, item.orderModel.Sku);
+                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum, item.orderModel.Sku, syncStock, item.orderModel.HyPrice);
 
                     if (shopstatus && orderstat)
                     {
