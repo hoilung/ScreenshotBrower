@@ -41,6 +41,7 @@ namespace ScreenshotBrower
             {
                 tbx_order.Text = "http://47.92.99.30/";
             };
+            
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
@@ -671,14 +672,14 @@ namespace ScreenshotBrower
         }
 
 
-        public bool ChangeOrder(string asin, string startTime, string endTime, string num, string sku = "", bool syncStock = false, string hyPrice = "0")
+        public bool ChangeOrder(BuildOrderModel orderModel, bool syncStock = false)
         {
 
             this.Invoke(new MethodInvoker(() =>
             {
                 toolStripStatusLabel1.Text += $" 获取商品详情";
             }));
-            var shopinfo = GetShopInfo(asin);
+            var shopinfo = GetShopInfo(orderModel.Asin);
             if (!shopinfo.state)
             {
                 this.Invoke(new MethodInvoker(() =>
@@ -691,9 +692,9 @@ namespace ScreenshotBrower
             {
 
 
-                if (string.IsNullOrEmpty(sku))
+                if (string.IsNullOrEmpty(orderModel.Sku))
                 {
-                    sku = shopinfo.data.sku + new Random().Next(10000, 99999);
+                    orderModel.Sku = shopinfo.data.sku + new Random().Next(10000, 99999);
                 }
 
                 var client = new RestClient();
@@ -706,14 +707,14 @@ namespace ScreenshotBrower
                     var request2 = new RestRequest();
                     request2.Resource = $"http://{LoginUri.Host}/kucun/add";
                     //start_date=&end_date=&imgurl=&title=&asin=&sku=&issuer=&num=1&price=&fnsku=&jg=&do_clear=on
-                    request2.AddParameter("start_date", startTime);
-                    request2.AddParameter("end_date", endTime);
+                    request2.AddParameter("start_date", orderModel.UpTime);
+                    request2.AddParameter("end_date", orderModel.UpendTime);
                     request2.AddParameter("imgurl", shopinfo.data.imgfirst);
                     request2.AddParameter("title", shopinfo.data.title);
-                    request2.AddParameter("asin", asin);
-                    request2.AddParameter("sku", sku);
+                    request2.AddParameter("asin", orderModel.Asin);
+                    request2.AddParameter("sku", orderModel.Sku);
                     request2.AddParameter("issuer", shopinfo.data.sku);
-                    request2.AddParameter("num", "1");
+                    request2.AddParameter("num", orderModel.KcCount);
                     request2.AddParameter("price", shopinfo.data.price.Replace("$", ""));
 
                     var arr = new[] {
@@ -730,7 +731,7 @@ namespace ScreenshotBrower
                     var fnsku = string.Concat("X002", tmp);
 
                     request2.AddParameter("fnsku", fnsku);
-                    request2.AddParameter("jg", hyPrice);//货运价格
+                    request2.AddParameter("jg", orderModel.HyPrice);//货运价格
                     request2.AddParameter("do_clear", "on");
                     var resp2 = client.Post(request2);
                     if (resp2.IsSuccessful)
@@ -747,18 +748,18 @@ namespace ScreenshotBrower
                 var request = new RestRequest();
                 request.Resource = $"http://{LoginUri.Host}/order/create";
 
-                request.AddParameter("start_date", startTime);
-                request.AddParameter("end_date", endTime);
+                request.AddParameter("start_date", orderModel.startTime);
+                request.AddParameter("end_date", orderModel.endTime);
                 request.AddParameter("order[sale_channel]", "Amazon.com");
                 request.AddParameter("order[distribution_channel]", "Amazon");
                 request.AddParameter("order[page_img]", shopinfo.data.imgfirst);
                 request.AddParameter("order[info]", shopinfo.data.title);
-                request.AddParameter("order[asin]", asin);
-                request.AddParameter("order[sku]", sku);
+                request.AddParameter("order[asin]", orderModel.Asin);
+                request.AddParameter("order[sku]", orderModel.Sku);
                 request.AddParameter("order[issuer]", shopinfo.data.sku);
                 request.AddParameter("order[num]", "1");
                 request.AddParameter("order[money]", shopinfo.data.price.Replace("$", ""));
-                request.AddParameter("do_num", num);
+                request.AddParameter("do_num", orderModel.OrderNum);
                 request.AddParameter("do_clear", "on");
 
                 var resp = client.Post(request);
@@ -844,9 +845,9 @@ namespace ScreenshotBrower
                                         lvi = new ListViewItem();
 
                                     var value = obj.ToString();
-                                    if (j == 8 || j == 9)
+                                    if (j == 8 || j == 9 || j == 12 || j == 13)
                                     {
-                                        value = ws.GetValue<DateTime>(i, j).ToString("yyyy-MM-dd");
+                                        value = ws.GetValue<DateTime>(i, j).ToString();
                                     }
 
                                     lvi.Text = (listView1.Items.Count + 1).ToString();
@@ -903,7 +904,7 @@ namespace ScreenshotBrower
                     shopModel = new BulidShopModel()
                 };
                 var item = listView1.Items[i];
-                if (item.SubItems.Count > 12)
+                if (item.SubItems.Count > 14)
                 {
                     bulidModel.shopModel.address = item.SubItems[3].Text;
                     bulidModel.shopModel.email = item.SubItems[4].Text;
@@ -918,7 +919,13 @@ namespace ScreenshotBrower
                     bulidModel.orderModel.endTime = item.SubItems[9].Text;
                     bulidModel.orderModel.OrderNum = item.SubItems[10].Text;
                     bulidModel.orderModel.Sku = item.SubItems[11].Text;
-                    bulidModel.orderModel.HyPrice = item.SubItems[12].Text;
+                    //库存信息
+
+                    bulidModel.orderModel.UpTime = item.SubItems[12].Text;
+                    bulidModel.orderModel.UpendTime = item.SubItems[13].Text;
+                    bulidModel.orderModel.KcCount = item.SubItems[14].Text;
+                    bulidModel.orderModel.HyPrice = item.SubItems[15].Text;
+
 
                     list.Add(bulidModel);
                 }
@@ -958,7 +965,7 @@ namespace ScreenshotBrower
                     {
                         toolStripStatusLabel1.Text = $"批量生成进度{i}/{list.Count}，设置订单信息：" + item.orderModel.Asin;
                     }));
-                    var orderstat = ChangeOrder(item.orderModel.Asin, item.orderModel.startTime, item.orderModel.endTime, item.orderModel.OrderNum, item.orderModel.Sku, syncStock, item.orderModel.HyPrice);
+                    var orderstat = ChangeOrder(item.orderModel, syncStock);
 
                     if (shopstatus && orderstat)
                     {

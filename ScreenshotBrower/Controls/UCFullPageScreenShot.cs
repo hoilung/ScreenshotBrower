@@ -29,7 +29,7 @@ namespace ScreenshotBrower.Controls
             cbx_pagetype.SelectedIndex = 2;
             this.Load += UCFullPageScreenShot_Load;
 
-            
+
             _CountryModels = JsonConvert.DeserializeObject<List<Models.CountryModel>>(Properties.Resources.country);
 
             cb_country.Items.Add("请选择国家地区");
@@ -38,6 +38,10 @@ namespace ScreenshotBrower.Controls
                 cb_country.Items.Add(item.Text);
             }
             cb_country.SelectedIndex = 0;
+
+#if !DEBUG
+            cb_country.Visible = false;
+#endif
         }
 
         private ToolStripStatusLabel toolStripStatus;
@@ -94,10 +98,11 @@ namespace ScreenshotBrower.Controls
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
 
-            var country = cb_country.Text;
+            var randomCity = cbx_changecity2.Checked;//随机切换地区
+            var country = cb_country.Text;//固定地区
             var pagetype = cbx_pagetype.SelectedIndex;
             Task.Run(() =>
-                BulidPdfAsync(urls.ToArray(), dirpath, country, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(pagetype)
+                BulidPdfAsync(urls.ToArray(), dirpath, country, randomCity, cbx_text.Checked ? tbx_text.Text : string.Empty, cbx_his.Checked, GetPaperFormat(pagetype)
             ));
 
         }
@@ -108,10 +113,11 @@ namespace ScreenshotBrower.Controls
         /// </summary>
         /// <param name="urls"></param>
         /// <param name="path"></param>
-        /// <param name="changeCity">切换城市</param>
+        /// <param name="changeCountry">选择切换的国家</param>
+        /// <param name="randomCity">随机切换城市</param>
         /// <param name="addText">添加页眉/页脚内容</param>
         /// <returns></returns>
-        private async Task BulidPdfAsync(Uri[] urls, string path, string changeCity, string addText, bool saveHis, PaperFormat paperFormat)
+        private async Task BulidPdfAsync(Uri[] urls, string path, string changeCountry, bool randomCity, string addText, bool saveHis, PaperFormat paperFormat)
         {
 
             try
@@ -161,13 +167,13 @@ namespace ScreenshotBrower.Controls
                     });
 
 
-                    if (!changeCity.Contains("请选择") && _CountryModels.Any())
+                    if (!changeCountry.Contains("请选择") && _CountryModels.Any())
                     {
                         this.Invoke(new MethodInvoker(() =>
                         {
                             if (toolStripStatus != null)
                             {
-                                toolStripStatus.Text = "初始化首页内容,开始切换地区";
+                                toolStripStatus.Text = "初始化首页内容,开始切换国家";
                             }
                         }));
                         //var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -177,7 +183,7 @@ namespace ScreenshotBrower.Controls
                         var pagetitle = await page.GetTitleAsync();
                         try
                         {
-                            var docid = _CountryModels.Find(m => m.Text.Contains(changeCity));
+                            var docid = _CountryModels.Find(m => m.Text.Contains(changeCountry));
                             if (docid != null)
                             {
                                 await page.EvaluateFunctionAsync(Properties.Resources.oChange2, docid.Id);
@@ -190,6 +196,33 @@ namespace ScreenshotBrower.Controls
                         }
                         await Task.Delay(10000);
                     }
+                    else if (randomCity)//没有选择国家的情况，选择地区切换地区
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            if (toolStripStatus != null)
+                            {
+                                toolStripStatus.Text = "初始化首页内容,开始切换地区";
+                            }
+                        }));
+
+                        var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        var zip = zips.OrderBy(m => Guid.NewGuid()).First();
+                        await page.GoToAsync("https://www.amazon.com/");
+                        var pagetitle = await page.GetTitleAsync();
+                        try
+                        {
+                            await page.EvaluateFunctionAsync(Properties.Resources.oChange, zip);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("访问网址受限,自动切换地区失败,\r\n请等待亚马逊解封或切换新ip后再尝试", pagetitle);
+                            throw ex;
+                        }
+                        await Task.Delay(10000);
+                    }
+
+
                     int count = 0;
 
                     var prelist = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);

@@ -71,6 +71,7 @@
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbx_SyncStock = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -86,7 +87,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -423,7 +426,10 @@
             this.columnHeader10,
             this.columnHeader11,
             this.columnHeader12,
-            this.columnHeader13});
+            this.columnHeader13,
+            this.columnHeader14,
+            this.columnHeader15,
+            this.columnHeader16});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -485,6 +491,10 @@
             // 
             this.columnHeader12.Text = "SKU";
             this.columnHeader12.Width = 45;
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "上架时间";
             // 
             // groupBox2
             // 
@@ -624,7 +634,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(684, 375);
+            this.tabPage3.Size = new System.Drawing.Size(724, 376);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "全网页截图";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -634,12 +644,20 @@
             this.ucFullPageScreenShot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucFullPageScreenShot1.Location = new System.Drawing.Point(3, 3);
             this.ucFullPageScreenShot1.Name = "ucFullPageScreenShot1";
-            this.ucFullPageScreenShot1.Size = new System.Drawing.Size(678, 369);
+            this.ucFullPageScreenShot1.Size = new System.Drawing.Size(718, 370);
             this.ucFullPageScreenShot1.TabIndex = 0;
             // 
-            // columnHeader13
+            // columnHeader14
             // 
-            this.columnHeader13.Text = "货运价格";
+            this.columnHeader14.Text = "截止时间";
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "库存数量";
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "货运价格";
             // 
             // Form1
             // 
@@ -734,6 +752,9 @@
         private System.Windows.Forms.CheckBox cbx_stock;
         private System.Windows.Forms.CheckBox cbx_SyncStock;
         private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ColumnHeader columnHeader16;
     }
 }
 

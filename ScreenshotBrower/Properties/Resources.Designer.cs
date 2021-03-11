@@ -166,10 +166,10 @@ namespace ScreenshotBrower.Properties {
         ///	try{		
         ///		var node1=document.querySelector(&quot;#imgDiv &gt; table &gt; tbody &gt; tr:nth-child(4) &gt; td:nth-child(1)&quot;);
         ///		var index1=node1.innerHTML.indexOf(&apos;&lt;b&gt;Address:&lt;/b&gt;&apos;);
+        ///		var index11=node1.innerHTML.indexOf(&apos; United States&lt;br&gt;&apos;);
         ///		var index2=node1.innerHTML.indexOf(&apos;&lt;b&gt;ZIP:&lt;/b&gt;&apos;);
         ///		var index3=node1.innerHTML.indexOf(&apos;&lt;b&gt;Purchase Date:&lt;/b&gt;&apos;);
-        ///		var line1=node1.innerHTML.slice(0,index1+15+10)+&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+node1.innerHTML.slice(index1+15+10,index2)+&apos;&lt;/c&gt;&apos;;
-        ///		var line2=node1.innerHTML.slice(index2,index2+11)+&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+nod [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///		var line1=node1.innerHTML.slice(0,index1+15+10)+&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+node1.innerHTML.slice(index1+15+10,index11-1)+&apos;&lt;/c&gt;&apos;+node1.innerHTML.slice(i [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string oBlurInvoice {
             get {

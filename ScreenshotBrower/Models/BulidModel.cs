@@ -36,10 +36,22 @@ namespace ScreenshotBrower.Models
         public string Asin { get; set; }
 
         public string OrderNum { get; set; }
-        public string Sku { get; internal set; }
+        public string Sku { get; internal set; } = string.Empty;
         /// <summary>
         /// 货运价格
         /// </summary>
         public string HyPrice { get; set; }
+        /// <summary>
+        /// 库存上架时间
+        /// </summary>
+        public string UpTime { get; internal set; }
+        /// <summary>
+        ///库存截止日期
+        /// </summary>
+        public string UpendTime { get; internal set; }
+        /// <summary>
+        /// 库存数量
+        /// </summary>
+        public string KcCount { get; internal set; }
     }
 }

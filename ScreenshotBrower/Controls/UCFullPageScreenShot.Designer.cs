@@ -30,6 +30,7 @@
         {
             this.tbx_urls = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbx_changecity2 = new System.Windows.Forms.CheckBox();
             this.cb_country = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbx_pagetype = new System.Windows.Forms.ComboBox();
@@ -63,6 +64,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbx_changecity2);
             this.groupBox2.Controls.Add(this.cb_country);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.cbx_pagetype);
@@ -82,11 +84,23 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "操作选项";
             // 
+            // cbx_changecity2
+            // 
+            this.cbx_changecity2.AutoSize = true;
+            this.cbx_changecity2.Checked = true;
+            this.cbx_changecity2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbx_changecity2.Location = new System.Drawing.Point(183, 27);
+            this.cbx_changecity2.Name = "cbx_changecity2";
+            this.cbx_changecity2.Size = new System.Drawing.Size(96, 16);
+            this.cbx_changecity2.TabIndex = 14;
+            this.cbx_changecity2.Text = "随机切换地区";
+            this.cbx_changecity2.UseVisualStyleBackColor = true;
+            // 
             // cb_country
             // 
             this.cb_country.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_country.FormattingEnabled = true;
-            this.cb_country.Location = new System.Drawing.Point(174, 25);
+            this.cb_country.Location = new System.Drawing.Point(403, 25);
             this.cb_country.Name = "cb_country";
             this.cb_country.Size = new System.Drawing.Size(121, 20);
             this.cb_country.TabIndex = 13;
@@ -123,7 +137,7 @@
             this.cbx_his.AutoSize = true;
             this.cbx_his.Checked = true;
             this.cbx_his.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbx_his.Location = new System.Drawing.Point(301, 29);
+            this.cbx_his.Location = new System.Drawing.Point(285, 27);
             this.cbx_his.Name = "cbx_his";
             this.cbx_his.Size = new System.Drawing.Size(96, 16);
             this.cbx_his.TabIndex = 10;
@@ -264,5 +278,6 @@
         private System.Windows.Forms.ComboBox cbx_pagetype;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cb_country;
+        private System.Windows.Forms.CheckBox cbx_changecity2;
     }
 }
