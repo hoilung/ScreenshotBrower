@@ -72,6 +72,9 @@
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbx_SyncStock = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -87,9 +90,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.ucFullPageScreenShot1 = new ScreenshotBrower.Controls.UCFullPageScreenShot();
-            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -116,10 +116,10 @@
             // tbx_order
             // 
             this.tbx_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(224)))), ((int)(((byte)(247)))));
-            this.tbx_order.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tbx_order.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbx_order.Location = new System.Drawing.Point(135, 101);
             this.tbx_order.Name = "tbx_order";
-            this.tbx_order.Size = new System.Drawing.Size(350, 29);
+            this.tbx_order.Size = new System.Drawing.Size(350, 27);
             this.tbx_order.TabIndex = 3;
             this.tbx_order.Text = "http://";
             // 
@@ -222,11 +222,11 @@
             // 
             // tbx_path
             // 
-            this.tbx_path.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tbx_path.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbx_path.Location = new System.Drawing.Point(134, 59);
             this.tbx_path.Name = "tbx_path";
             this.tbx_path.ReadOnly = true;
-            this.tbx_path.Size = new System.Drawing.Size(350, 26);
+            this.tbx_path.Size = new System.Drawing.Size(350, 24);
             this.tbx_path.TabIndex = 1;
             // 
             // btn_path
@@ -496,6 +496,18 @@
             // 
             this.columnHeader13.Text = "上架时间";
             // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "截止时间";
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "库存数量";
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "货运价格";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbx_SyncStock);
@@ -646,18 +658,6 @@
             this.ucFullPageScreenShot1.Name = "ucFullPageScreenShot1";
             this.ucFullPageScreenShot1.Size = new System.Drawing.Size(718, 370);
             this.ucFullPageScreenShot1.TabIndex = 0;
-            // 
-            // columnHeader14
-            // 
-            this.columnHeader14.Text = "截止时间";
-            // 
-            // columnHeader15
-            // 
-            this.columnHeader15.Text = "库存数量";
-            // 
-            // columnHeader16
-            // 
-            this.columnHeader16.Text = "货运价格";
             // 
             // Form1
             // 

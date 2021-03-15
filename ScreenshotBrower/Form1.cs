@@ -24,6 +24,7 @@ using System.Net;
 using PuppeteerSharp.Helpers;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
+using System.Configuration;
 
 namespace ScreenshotBrower
 {
@@ -41,7 +42,8 @@ namespace ScreenshotBrower
             {
                 tbx_order.Text = "http://47.92.99.30/";
             };
-            
+
+        
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
@@ -52,6 +54,7 @@ namespace ScreenshotBrower
             var addrblur = cbx_blur.Checked;
             var detailblur = cbx_BlurDetail.Checked;
             var invoiceblur = cbx_Blurinvoice.Checked;
+          
 
             Task.Run(async () =>
             {
@@ -170,6 +173,7 @@ namespace ScreenshotBrower
                         toolStripStatusLabel1.Text = "正在生成库存截图";
                     }));
 
+                    var kcasin = await page.EvaluateFunctionAsync<string>("()=>{return  document.querySelector('body > div.main-body > div.search.clear > div.mt-search > div > input[type=text]').value;}");
                     var stockname = newdir + "/inventory.png";
                     using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
                     {
@@ -177,7 +181,7 @@ namespace ScreenshotBrower
                         Type = ScreenshotType.Png
                     }))
                     {
-                        var urltext = $"https://sellercentral.amazon.com/hz/inventory/view/FBAKNIGHTS/ref=xx_fbamnginv_dnav_xx?tbla_myitable=sort:{{\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"}};search:{orderList.Asin}";
+                        var urltext = $"https://sellercentral.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"%7D;search:{kcasin};pagination:1;";
                         //合并头
                         var stockImage = Image.FromStream(liststream);
                         var detailheaderImage = this.ReWirteImage(Properties.Resources.Inventory_head, urltext);
