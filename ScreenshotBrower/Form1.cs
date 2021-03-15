@@ -181,7 +181,7 @@ namespace ScreenshotBrower
                         Type = ScreenshotType.Png
                     }))
                     {
-                        var urltext = $"https://sellercentral.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"%7D;search:{kcasin};pagination:1;";
+                        var urltext = $"sellercentral.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"%7D;search:{kcasin};pagination:1;";
                         //合并头
                         var stockImage = Image.FromStream(liststream);
                         var detailheaderImage = this.ReWirteImage(Properties.Resources.Inventory_head, urltext);
