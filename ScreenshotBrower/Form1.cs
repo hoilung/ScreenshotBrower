@@ -721,17 +721,19 @@ namespace ScreenshotBrower
                     request2.AddParameter("num", orderModel.KcCount);
                     request2.AddParameter("price", shopinfo.data.price.Replace("$", ""));
 
+                    var seed = Guid.NewGuid().GetHashCode();
+                    var rand = new Random(seed);
                     var arr = new[] {
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65),
-                        (byte)Convert.ToInt32(new Random().Next(0, 25) + 65)
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65),
+                        (byte)Convert.ToInt32(rand.Next(0, 25) + 65)
                     };
 
                     var tmp = Convert.ToString(System.Text.Encoding.ASCII.GetString(arr));
-                    tmp = tmp.Insert(5, new Random().Next(0, 10).ToString());
+                    tmp = tmp.Insert(5, rand.Next(0, 10).ToString());
                     var fnsku = string.Concat("X002", tmp);
 
                     request2.AddParameter("fnsku", fnsku);
