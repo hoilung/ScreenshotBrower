@@ -49,6 +49,10 @@
             this.cbx_invoice = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rb_pdf = new System.Windows.Forms.RadioButton();
+            this.rb_image = new System.Windows.Forms.RadioButton();
+            this.label11 = new System.Windows.Forms.Label();
             this.cbx_stock = new System.Windows.Forms.CheckBox();
             this.cbx_Blurinvoice = new System.Windows.Forms.CheckBox();
             this.cbx_BlurDetail = new System.Windows.Forms.CheckBox();
@@ -93,6 +97,7 @@
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -244,7 +249,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(8, 290);
+            this.label3.Location = new System.Drawing.Point(12, 326);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(440, 17);
             this.label3.TabIndex = 14;
@@ -284,6 +289,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.cbx_stock);
             this.groupBox1.Controls.Add(this.cbx_Blurinvoice);
             this.groupBox1.Controls.Add(this.cbx_BlurDetail);
@@ -311,6 +318,49 @@
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "生成设置";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rb_pdf);
+            this.panel1.Controls.Add(this.rb_image);
+            this.panel1.Location = new System.Drawing.Point(129, 272);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(207, 38);
+            this.panel1.TabIndex = 24;
+            // 
+            // rb_pdf
+            // 
+            this.rb_pdf.AutoSize = true;
+            this.rb_pdf.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.rb_pdf.Location = new System.Drawing.Point(114, 5);
+            this.rb_pdf.Name = "rb_pdf";
+            this.rb_pdf.Size = new System.Drawing.Size(59, 25);
+            this.rb_pdf.TabIndex = 1;
+            this.rb_pdf.Text = "PDF";
+            this.rb_pdf.UseVisualStyleBackColor = true;
+            // 
+            // rb_image
+            // 
+            this.rb_image.AutoSize = true;
+            this.rb_image.Checked = true;
+            this.rb_image.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.rb_image.Location = new System.Drawing.Point(7, 5);
+            this.rb_image.Name = "rb_image";
+            this.rb_image.Size = new System.Drawing.Size(60, 25);
+            this.rb_image.TabIndex = 0;
+            this.rb_image.TabStop = true;
+            this.rb_image.Text = "图片";
+            this.rb_image.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.label11.Location = new System.Drawing.Point(8, 279);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(122, 21);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "截图文件选项：";
             // 
             // cbx_stock
             // 
@@ -680,6 +730,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tb_num)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -755,6 +807,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ColumnHeader columnHeader16;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton rb_pdf;
+        private System.Windows.Forms.RadioButton rb_image;
     }
 }
 

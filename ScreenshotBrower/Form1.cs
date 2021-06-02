@@ -42,8 +42,9 @@ namespace ScreenshotBrower
             {
                 tbx_order.Text = "http://47.92.99.30/";
             };
+           
 
-        
+
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
@@ -54,6 +55,7 @@ namespace ScreenshotBrower
             var addrblur = cbx_blur.Checked;
             var detailblur = cbx_BlurDetail.Checked;
             var invoiceblur = cbx_Blurinvoice.Checked;
+
           
 
             Task.Run(async () =>
@@ -114,10 +116,10 @@ namespace ScreenshotBrower
                     toolStripStatusLabel1.Text = "创建新的文件目录";
                 }));
 
-                var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+                var newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MMdd-HHmmss"));
                 if (button.Tag != null)
                 {
-                    newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MM-dd"), button.Tag.ToString());//批量过来的指定目录 
+                    newdir = Path.Combine(dirBase, DateTime.Now.ToString("yyyy-MMdd"), button.Tag.ToString());//批量过来的指定目录 
                 }
                 Directory.CreateDirectory(newdir);
 
@@ -148,19 +150,26 @@ namespace ScreenshotBrower
                         toolStripProgressBar1.Maximum = taskMax;
                         toolStripStatusLabel1.Text = "正在生成列表截图";
                     }));
-                    //列表
 
-                    var listname = newdir + "/list.jpg";
-                    using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                    //列表                    
+                    if (rb_image.Checked)//图片
                     {
-                        FullPage = true,
-                        Type = ScreenshotType.Png
-                    }))
+                        var listname = newdir + "/list.jpg";
+                        using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                        {
+                            FullPage = true,
+                            Type = ScreenshotType.Png
+                        }))
+                        {
+                            //合并头
+                            var listiamge = Image.FromStream(liststream);
+                            this.MergeImage(Properties.Resources.list_head, listiamge, listname);
+                        };
+                    }else if(rb_pdf.Checked)//pdf
                     {
-                        //合并头
-                        var listiamge = Image.FromStream(liststream);
-                        this.MergeImage(Properties.Resources.list_head, listiamge, listname);
-                    };
+                        var listname = newdir + "/list.pdf";
+                        await page.PdfAsync(listname,new PdfOptions { Width=1920});
+                    }
                 }
                 //库存截图
                 if (cbx_stock.Checked)
@@ -174,20 +183,28 @@ namespace ScreenshotBrower
                     }));
 
                     var kcasin = await page.EvaluateFunctionAsync<string>("()=>{return  document.querySelector('body > div.main-body > div.search.clear > div.mt-search > div > input[type=text]').value;}");
-                    var stockname = newdir + "/inventory.png";
-                    using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+
+                    if (rb_image.Checked)
                     {
-                        FullPage = true,
-                        Type = ScreenshotType.Png
-                    }))
+                        var stockname = newdir + "/inventory.png";
+                        using (var liststream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                        {
+                            FullPage = true,
+                            Type = ScreenshotType.Png
+                        }))
+                        {
+                            var urltext = $"sellercentral.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"%7D;search:{kcasin};pagination:1;";
+                            //合并头
+                            var stockImage = Image.FromStream(liststream);
+                            var detailheaderImage = this.ReWirteImage(Properties.Resources.Inventory_head, urltext);
+                            //合并文件
+                            MergeImage(detailheaderImage, stockImage, stockname);
+                        };
+                    }else if(rb_pdf.Checked)
                     {
-                        var urltext = $"sellercentral.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B\"sortOrder\"%3A\"DESCENDING\"%2C\"sortedColumnId\"%3A\"date\"%7D;search:{kcasin};pagination:1;";
-                        //合并头
-                        var stockImage = Image.FromStream(liststream);
-                        var detailheaderImage = this.ReWirteImage(Properties.Resources.Inventory_head, urltext);
-                        //合并文件
-                        MergeImage(detailheaderImage, stockImage, stockname);
-                    };
+                        var stockname = newdir + "/inventory.pdf";
+                       await page.PdfAsync(stockname, new PdfOptions { Width = 1920 });
+                    }
                 }
 
 
@@ -226,26 +243,37 @@ namespace ScreenshotBrower
                                 //详情地址模糊
                                 await page.EvaluateFunctionAsync(Properties.Resources.oBlurDetail);
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-
-                                throw;
+                                MessageBox.Show("地址模糊错误！！！"+ex.Message);
                             }
                         }
-                        var detailname = newdir + $"/detail-{item.DetailNum}.jpg";
-                        using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                        
+                        //详情
+                        if(rb_image.Checked)
                         {
-                            FullPage = true,
-                            Type = ScreenshotType.Png
-                        }))
-                        {
-                            var detailimage = Image.FromStream(detailstream);
-                            //重写头
-                            var detailheaderImage = this.ReWirteImage(Properties.Resources.detail_head, item.DetailNumLink);
-                            //合并文件
-                            MergeImage(detailheaderImage, detailimage, detailname);
-                        }
+                            var detailname = newdir + $"/detail-{item.DetailNum}.jpg";
+                            using (var detailstream = await page.ScreenshotStreamAsync(new ScreenshotOptions()
+                            {
+                                FullPage = true,
+                                Type = ScreenshotType.Png
+                            }))
+                            {
+                                var detailimage = Image.FromStream(detailstream);
+                                //重写头
+                                var detailheaderImage = this.ReWirteImage(Properties.Resources.detail_head, item.DetailNumLink);
+                                //合并文件
+                                MergeImage(detailheaderImage, detailimage, detailname);
+                            }
 
+                        }
+                        else if(rb_pdf.Checked)
+                        {
+                            var detailname = newdir + $"/detail-{item.DetailNum}.pdf";
+                           await page.PdfAsync(detailname, new PdfOptions { Width = 1920 });
+                        }
+                       
+                        //发票
                         if (cbx_invoice.Checked)
                         {
                             this.Invoke(new MethodInvoker(() =>
@@ -273,20 +301,28 @@ namespace ScreenshotBrower
                                     throw;
                                 }
                             }
-
-                            var invoicename = newdir + $"/invoice-{item.DetailNum}.png";
-                            await page.ScreenshotAsync(invoicename, new ScreenshotOptions()
+                            if(rb_image.Checked)
                             {
-                                Type = ScreenshotType.Png,
-                            });
+                                var invoicename = newdir + $"/invoice-{item.DetailNum}.png";
+                                await page.ScreenshotAsync(invoicename, new ScreenshotOptions()
+                                {
+                                    Type = ScreenshotType.Png,
+                                });
+                            }
+                            else if(rb_pdf.Checked)
+                            {
+                                var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
+                                await page.PdfAsync(invoicename, new PdfOptions { Width = 1920 });
+                                //await page.PdfAsync(invoicename, new PdfOptions()
+                                //{
+                                //    Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
+                                //    Width = 800// Screen.PrimaryScreen.WorkingArea.Width
+                                //});
+                            }
 
-                            //生成pdf
-                            //var invoicename = newdir + $"/invoice-{item.DetailNum}.pdf";
-                            //await page.PdfAsync(invoicename, new PdfOptions()
-                            //{
-                            //    Height = 600,// Screen.PrimaryScreen.WorkingArea.Height,
-                            //    Width = 800// Screen.PrimaryScreen.WorkingArea.Width
-                            //});
+
+                          
+
                         }
                     }
                     catch (Exception ex)
@@ -549,7 +585,7 @@ namespace ScreenshotBrower
                 this.Invoke(new MethodInvoker(() =>
                 {
                     toolStripProgressBar1.Value = e.ProgressPercentage;
-                    toolStripStatusLabel1.Text = $"初始化... {e.BytesReceived}/{e.TotalBytesToReceive}";
+                    toolStripStatusLabel1.Text = $"{e.ProgressPercentage}% 初始化...";
                     if (toolStripProgressBar1.Value == toolStripProgressBar1.Maximum)
                     {
                         toolStripStatusLabel1.Text = "准备";
