@@ -147,13 +147,16 @@ namespace ScreenshotBrower.Properties {
         
         /// <summary>
         ///   查找类似 ()=&gt;{
-        ///    try {
-        ///		
-        ///		var addr=document.querySelector(&apos;body &gt; div &gt; div.main-left &gt; div.main-info &gt; div:nth-child(2) &gt; ul &gt; li:nth-child(1) &gt; span&apos;);		
-        ///		var index1=addr.innerHTML.indexOf(&apos;&lt;br&gt;&apos;); 
-        ///		var index2=addr.innerHTML.lastIndexOf(&apos;&lt;br&gt;&apos;);		
-        ///		var line1=&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+addr.innerHTML.slice(0,index1-6)+&quot;&lt;/c&gt;&quot;+addr.innerHTML.slice(index1-6,index1+4);
-        ///		var line2=addr.innerHTML.slice(index1+4,index1+4+10)+&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+addr.innerHTML.slice(index1+4+10,index2)+&apos;&lt;/c&gt;&apos; [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    try {		
+        ///		var addr=document.querySelector(&apos;r2&apos;);		
+        ///		var index1=addr.innerHTML.length;	
+        ///		var line1=addr.innerHTML.slice(0,10)+&apos;&lt;c style=&quot;filter:blur(3px)&quot;&gt;&apos;+addr.innerHTML.slice(10,index1)+&quot;&lt;/c&gt;&quot;;				
+        ///		addr.innerHTML=line1;
+        ///        return 1;
+        ///    } catch (error) {
+        ///        return 0;
+        ///    }
+        ///} 的本地化字符串。
         /// </summary>
         internal static string oBlurDetail {
             get {
