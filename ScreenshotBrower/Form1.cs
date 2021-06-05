@@ -34,7 +34,7 @@ namespace ScreenshotBrower
         {
             InitializeComponent();
 
-            this.Text += " v" + this.ProductVersion.ToLower();
+            this.Text += " v" + typeof(Form1).Assembly.GetName().Version;
             lb_computerInfo.Text = $"{lb_computerInfo.Text}{new ComputerInfo().OSFullName} {Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
             tbx_path.Focus();
 
