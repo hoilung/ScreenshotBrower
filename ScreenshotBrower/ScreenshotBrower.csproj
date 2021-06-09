@@ -91,6 +91,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\MatchCaptch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MatchCaptch.Designer.cs">
+      <DependentUpon>MatchCaptch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UCFullPageScreenShot.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     <Compile Include="Models\ShopModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\MatchCaptch.resx">
+      <DependentUpon>MatchCaptch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UCFullPageScreenShot.resx">
       <DependentUpon>UCFullPageScreenShot.cs</DependentUpon>
     </EmbeddedResource>

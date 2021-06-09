@@ -27,7 +27,7 @@ namespace ScreenshotBrower.Controls
             tbx_text.Text = DateTime.Now.ToString("yyyy/MM/dd");
 
             cbx_pagetype.SelectedIndex = 2;
-            this.Load += UCFullPageScreenShot_Load;
+       //     this.Load += UCFullPageScreenShot_Load;
 
 
             _CountryModels = JsonConvert.DeserializeObject<List<Models.CountryModel>>(Properties.Resources.country);
@@ -44,21 +44,36 @@ namespace ScreenshotBrower.Controls
 #endif
         }
 
-        private ToolStripStatusLabel toolStripStatus;
-        private ToolStripProgressBar progressBar;
-        private void UCFullPageScreenShot_Load(object sender, EventArgs e)
-        {
-            if (this.FindForm() != null)
-            {
-                var cl = this.FindForm().Controls.Find("statusStrip1", true);
-                if (cl != null)
-                {
-                    var statusStrip1 = cl[0] as StatusStrip;
-                    toolStripStatus = statusStrip1.Items.Find("toolStripStatusLabel1", true)[0] as ToolStripStatusLabel;
-                    progressBar = statusStrip1.Items.Find("toolStripProgressBar1", true)[0] as ToolStripProgressBar;
-                }
-            }
-        }
+        public delegate void ShowTooltipInfoHandler(string info);
+        public delegate void SetProcessMaxHandler(int val);
+        public delegate void SetProcessValueHanlder(int val);
+
+        public event ShowTooltipInfoHandler ShowTooltipInfo;
+        public event SetProcessMaxHandler SetProcessMax;
+        public event SetProcessValueHanlder SetProcessValue;
+
+
+        protected virtual void OnShowTooltipInfo(string info) => this.ShowTooltipInfo?.Invoke(info);
+
+        protected virtual void OnSetProcessMax(int val) => this.SetProcessMax?.Invoke(val);
+
+        protected virtual void OnSetProcessValue(int val) => this.SetProcessValue?.Invoke(val);
+
+        //private ToolStripStatusLabel toolStripStatus;
+        //private ToolStripProgressBar progressBar;
+        //private void UCFullPageScreenShot_Load(object sender, EventArgs e)
+        //{
+        //    if (this.FindForm() != null)
+        //    {
+        //        var cl = this.FindForm().Controls.Find("statusStrip1", true);
+        //        if (cl != null)
+        //        {
+        //            var statusStrip1 = cl[0] as StatusStrip;
+        //            toolStripStatus = statusStrip1.Items.Find("toolStripStatusLabel1", true)[0] as ToolStripStatusLabel;
+        //            progressBar = statusStrip1.Items.Find("toolStripProgressBar1", true)[0] as ToolStripProgressBar;
+        //        }
+        //    }
+        //}
 
         private void btn_path_Click(object sender, EventArgs e)
         {
@@ -92,9 +107,10 @@ namespace ScreenshotBrower.Controls
                 MessageBox.Show("请正确填写网址，http开头每行一个", "提示");
                 return;
             }
-            toolStripStatus.Text = "0/" + urls.Count();
-            progressBar.Maximum = urls.Count();
-            progressBar.Value = 0;
+            
+            OnShowTooltipInfo("0/" + urls.Count());
+            OnSetProcessMax(urls.Count());
+            OnSetProcessValue(0);            
             var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
             Directory.CreateDirectory(dirpath);
 
@@ -144,21 +160,21 @@ namespace ScreenshotBrower.Controls
                         //"--disable-local-storage",
                         // "--no-zygote",
                         // "--disable-bundled-ppapi-flash"
-                        $"--user-agent={_userAgent}"
+                        //$"--user-agent={_userAgent}"
                     },
                     IgnoreHTTPSErrors = true,
                 };
                 using (var browser = await Puppeteer.LaunchAsync(option))
                 {
                     BrowserContext browserContext = browser.DefaultContext;
-                    if (saveHis)
-                    {
-                        browserContext = await browser.CreateIncognitoBrowserContextAsync();
+                    //if (saveHis)
+                    //{
+                    //    browserContext = await browser.CreateIncognitoBrowserContextAsync();
 
-                    }
+                    //}
 
                     var page = await browserContext.NewPageAsync();
-
+                   await page.SetUserAgentAsync(_userAgent);
 
                     await page.SetViewportAsync(new ViewPortOptions
                     {
@@ -169,13 +185,7 @@ namespace ScreenshotBrower.Controls
 
                     if (!changeCountry.Contains("请选择") && _CountryModels.Any())
                     {
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            if (toolStripStatus != null)
-                            {
-                                toolStripStatus.Text = "初始化首页内容,开始切换国家";
-                            }
-                        }));
+                        OnShowTooltipInfo("初始化首页内容,开始切换国家");
                         //var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                         //var zip = zips.OrderBy(m => Guid.NewGuid()).First();                       
 
@@ -198,13 +208,9 @@ namespace ScreenshotBrower.Controls
                     }
                     else if (randomCity)//没有选择国家的情况，选择地区切换地区
                     {
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            if (toolStripStatus != null)
-                            {
-                                toolStripStatus.Text = "初始化首页内容,开始切换地区";
-                            }
-                        }));
+
+                        OnShowTooltipInfo("初始化首页内容,开始切换地区");
+                       
 
                         var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                         var zip = zips.OrderBy(m => Guid.NewGuid()).First();
@@ -212,6 +218,7 @@ namespace ScreenshotBrower.Controls
                         var pagetitle = await page.GetTitleAsync();
                         try
                         {
+                            await InputMatchCaptch(page);
                             await page.EvaluateFunctionAsync(Properties.Resources.oChange, zip);
                         }
                         catch (Exception ex)
@@ -233,14 +240,9 @@ namespace ScreenshotBrower.Controls
 
                         try
                         {
-                            this.Invoke(new MethodInvoker(() =>
-                            {
-                                if (toolStripStatus != null)
-                                {
-                                    toolStripStatus.Text = "开始加载页面 " + item;
-                                    progressBar.PerformStep();
-                                }
-                            }));
+                            OnShowTooltipInfo("开始加载页面 " + item);
+                            // progressBar.PerformStep();
+                          
 
                             //搜索记录
                             if (saveHis)
@@ -248,37 +250,22 @@ namespace ScreenshotBrower.Controls
                                 var preurl = prelist.OrderBy(m => Guid.NewGuid()).Take(6).ToList();
                                 for (int i = 0; i < preurl.Count; i++)
                                 {
+                                    await InputMatchCaptch(page);
                                     var url = preurl[i];
-                                    this.Invoke(new MethodInvoker(() =>
-                                    {
-                                        if (toolStripStatus != null)
-                                        {
-                                            toolStripStatus.Text = $"增加浏览记录 {(i + 1)}/{preurl.Count}";
-                                        }
-                                    }));
+                                    OnShowTooltipInfo($"增加浏览记录 {(i + 1)}/{preurl.Count}");
+                                    
                                     await page.GoToAsync(url);
 
                                 }
                             }
-                            this.Invoke(new MethodInvoker(() =>
-                            {
-                                if (toolStripStatus != null)
-                                {
-                                    toolStripStatus.Text = $"打开目标页面 " + item.ToString();
-                                }
-                            }));
+                            OnShowTooltipInfo("打开目标页面 " + item.ToString());
                             //目标页面
                             await page.GoToAsync(item.ToString());
                             await page.EvaluateFunctionAsync<string>("()=>{try{document.querySelector('#productTitle').click(); document.querySelector('.nav-signin-tt.nav-flyout').remove();return 1;}catch(ex){return 0;}}");
                             if (saveHis)
                             {
-                                this.Invoke(new MethodInvoker(() =>
-                                {
-                                    if (toolStripStatus != null)
-                                    {
-                                        toolStripStatus.Text = $"展示浏览记录";
-                                    }
-                                }));
+                                OnShowTooltipInfo("展示浏览记录");
+                              
                                 var result = await page.EvaluateFunctionAsync<string>("()=>{try{window.scrollBy(0,document.querySelector('.navFooterBackToTopText').getBoundingClientRect().top-600);return 1;}catch(ex){console.log(ex);return 0;}}");
 
                                 await Task.Delay(3000);
@@ -288,41 +275,34 @@ namespace ScreenshotBrower.Controls
 
                             }
                             var file = Path.Combine(path, item.AbsolutePath.Replace("/dp/", "").Replace("/", "") + ".pdf");
-                            this.Invoke(new MethodInvoker(() =>
-                            {
-                                if (toolStripStatus != null)
-                                {
-                                    toolStripStatus.Text = "开始生成PDF " + file;
-                                }
-                            }));
-                            await page.PdfAsync(file, new PdfOptions()
-                            {
-                                PrintBackground = true,
-                                DisplayHeaderFooter = !string.IsNullOrEmpty(addText),
-                                HeaderTemplate = ht,
-                                FooterTemplate = ft,
-                                MarginOptions = new PuppeteerSharp.Media.MarginOptions()
-                                {
-                                    Top = "40",
-                                    Bottom = "40",
-                                    Left = "30",
-                                    Right = "30"
+                            OnShowTooltipInfo("开始生成PDF " + file);
 
-                                },
-                                Format = paperFormat
+                            if (option.Headless)
+                            {
+                                await page.PdfAsync(file, new PdfOptions()
+                                {
+                                    PrintBackground = true,
+                                    DisplayHeaderFooter = !string.IsNullOrEmpty(addText),
+                                    HeaderTemplate = ht,
+                                    FooterTemplate = ft,
+                                    MarginOptions = new PuppeteerSharp.Media.MarginOptions()
+                                    {
+                                        Top = "40",
+                                        Bottom = "40",
+                                        Left = "30",
+                                        Right = "30"
 
-                            });
+                                    },
+                                    Format = paperFormat
+
+                                });
+                            }
                             count += 1;
+                            OnSetProcessValue(count);
                         }
                         catch (Exception ex)
                         {
-                            this.Invoke(new MethodInvoker(() =>
-                            {
-                                if (toolStripStatus != null)
-                                {
-                                    toolStripStatus.Text = ex.Message + "操作失败 " + item;
-                                }
-                            }));
+                            OnShowTooltipInfo(ex.Message + "操作失败 " + item);
                             continue;
                             // throw;
                         }
@@ -334,15 +314,7 @@ namespace ScreenshotBrower.Controls
                     //    await page.DeleteCookieAsync(ck);
                     //}
 
-
-                    this.Invoke(new MethodInvoker(() =>
-                    {
-                        if (toolStripStatus != null)
-                        {
-                            toolStripStatus.Text = $"操作完成 {count}/{urls.Length}";
-                            progressBar.Value = 0;
-                        }
-                    }));
+                    OnShowTooltipInfo($"操作完成 {count}/{urls.Length}");
                 }
             }
             catch (Exception ex)
@@ -357,7 +329,45 @@ namespace ScreenshotBrower.Controls
 
         }
 
+        private static async Task InputMatchCaptch(Page page)
+        {
+            try
+            {
+                var input_captch = await page.QuerySelectorAsync("#captchacharacters");
+                if (input_captch != null)
+                {
+                    var img_captch = await page.EvaluateFunctionAsync<string>("()=>{try{ return document.querySelector('form img').src;}catch(e){return '';}}");
+                    var btnsubmit = await page.QuerySelectorAsync("button[type='submit']");
 
+                    var capthForm = new Form()
+                    {
+                        Text="请在文本框内输入图片上的验证码！",
+                        FormBorderStyle=FormBorderStyle.FixedSingle,
+                        MaximizeBox=false,
+                        ShowIcon=false,
+                        Height = 300,
+                        Width = 450,                        
+                    };
+
+                    var macthCaptch = new MatchCaptch();
+                    macthCaptch.LoadImage(img_captch);
+                    capthForm.Controls.Add(macthCaptch);
+                    if (capthForm.ShowDialog() == DialogResult.OK)
+                    {
+                        await input_captch.TypeAsync(macthCaptch.InputStr,new PuppeteerSharp.Input.TypeOptions {Delay=500 });//输入验证码
+                        await btnsubmit.ClickAsync();
+                        await page.WaitForTimeoutAsync(5000);
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,"输入验证码异常错误",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                
+            }
+        }
 
         public PaperFormat GetPaperFormat(int index)
         {

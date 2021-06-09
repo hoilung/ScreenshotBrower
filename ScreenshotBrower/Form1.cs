@@ -42,9 +42,37 @@ namespace ScreenshotBrower
             {
                 tbx_order.Text = "http://47.92.99.30/";
             };
+
+            this.ucFullPageScreenShot1.ShowTooltipInfo += UcFullPageScreenShot1_ShowTooltipInfo;
+            this.ucFullPageScreenShot1.SetProcessMax += UcFullPageScreenShot1_SetProcessMax;
+            this.ucFullPageScreenShot1.SetProcessValue += UcFullPageScreenShot1_SetProcessValue;
+
+        }
+
+        private void UcFullPageScreenShot1_SetProcessValue(int val)
+        {
+            this.Invoke(new MethodInvoker(() => {
+                this.toolStripProgressBar1.Value = val;
+            }));
+
+            
+        }
+
+        private void UcFullPageScreenShot1_SetProcessMax(int val)
+        {
+            this.Invoke(new MethodInvoker(() => {
+                this.toolStripProgressBar1.Maximum = val;
+            }));
+
            
+        }
 
-
+        private void UcFullPageScreenShot1_ShowTooltipInfo(string info)
+        {
+            this.Invoke(new MethodInvoker(()=> {
+                this.toolStripStatusLabel1.Text = info;
+            }));
+            
         }
 
         private void btn_start_ClickAsync(object sender, EventArgs e)
