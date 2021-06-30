@@ -27,7 +27,7 @@ namespace ScreenshotBrower.Controls
             tbx_text.Text = DateTime.Now.ToString("yyyy/MM/dd");
 
             cbx_pagetype.SelectedIndex = 2;
-       //     this.Load += UCFullPageScreenShot_Load;
+            //     this.Load += UCFullPageScreenShot_Load;
 
 
             _CountryModels = JsonConvert.DeserializeObject<List<Models.CountryModel>>(Properties.Resources.country);
@@ -107,11 +107,11 @@ namespace ScreenshotBrower.Controls
                 MessageBox.Show("请正确填写网址，http开头每行一个", "提示");
                 return;
             }
-            
+
             OnShowTooltipInfo("0/" + urls.Count());
             OnSetProcessMax(urls.Count());
-            OnSetProcessValue(0);            
-            var dirpath = Path.Combine(tbx_path.Text, DateTime.Now.ToString("yyyy-MM-dd"));
+            OnSetProcessValue(0);
+            var dirpath = Path.Combine(tbx_path.Text,DateTime.Now.ToString("yyyyMMdd"));
             Directory.CreateDirectory(dirpath);
 
             var randomCity = cbx_changecity2.Checked;//随机切换地区
@@ -174,7 +174,7 @@ namespace ScreenshotBrower.Controls
                     //}
 
                     var page = await browserContext.NewPageAsync();
-                   await page.SetUserAgentAsync(_userAgent);
+                    await page.SetUserAgentAsync(_userAgent);
 
                     await page.SetViewportAsync(new ViewPortOptions
                     {
@@ -201,16 +201,16 @@ namespace ScreenshotBrower.Controls
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("访问网址受限,自动切换地区失败,\r\n请等待亚马逊解封或切换新ip后再尝试", pagetitle);
-                            throw ex;
+                            MessageBox.Show("访问网址受限,自动切换地区失败,\r\n请等待亚马逊解封或切换新ip后再尝试\r\n" + ex.Message, pagetitle);
+                            return;
                         }
-                        await Task.Delay(10000);
+                        await Task.Delay(8000);
                     }
                     else if (randomCity)//没有选择国家的情况，选择地区切换地区
                     {
 
                         OnShowTooltipInfo("初始化首页内容,开始切换地区");
-                       
+
 
                         var zips = Properties.Resources.zip.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                         var zip = zips.OrderBy(m => Guid.NewGuid()).First();
@@ -230,19 +230,21 @@ namespace ScreenshotBrower.Controls
                     }
 
 
-                    int count = 0;
+                    int index = 0;
+                    int max = urls.Length;
 
                     var prelist = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var item in urls)
                     {
+                        index += 1;
                         var ht = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
                         var ft = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
 
                         try
                         {
-                            OnShowTooltipInfo("开始加载页面 " + item);
+                            OnShowTooltipInfo($"开始加载页面{item}");
                             // progressBar.PerformStep();
-                          
+
 
                             //搜索记录
                             if (saveHis)
@@ -253,7 +255,7 @@ namespace ScreenshotBrower.Controls
                                     await InputMatchCaptch(page);
                                     var url = preurl[i];
                                     OnShowTooltipInfo($"增加浏览记录 {(i + 1)}/{preurl.Count}");
-                                    
+
                                     await page.GoToAsync(url);
 
                                 }
@@ -265,7 +267,7 @@ namespace ScreenshotBrower.Controls
                             if (saveHis)
                             {
                                 OnShowTooltipInfo("展示浏览记录");
-                              
+
                                 var result = await page.EvaluateFunctionAsync<string>("()=>{try{window.scrollBy(0,document.querySelector('.navFooterBackToTopText').getBoundingClientRect().top-600);return 1;}catch(ex){console.log(ex);return 0;}}");
 
                                 await Task.Delay(3000);
@@ -292,13 +294,13 @@ namespace ScreenshotBrower.Controls
                                         Left = "30",
                                         Right = "30"
 
-                                    },
+                                    },                                    
                                     Format = paperFormat
 
                                 });
                             }
-                            count += 1;
-                            OnSetProcessValue(count);
+
+                            OnSetProcessValue(index);
                         }
                         catch (Exception ex)
                         {
@@ -314,7 +316,7 @@ namespace ScreenshotBrower.Controls
                     //    await page.DeleteCookieAsync(ck);
                     //}
 
-                    OnShowTooltipInfo($"操作完成 {count}/{urls.Length}");
+                    OnShowTooltipInfo($"操作完成 {index}/{urls.Length}");
                 }
             }
             catch (Exception ex)
@@ -341,12 +343,13 @@ namespace ScreenshotBrower.Controls
 
                     var capthForm = new Form()
                     {
-                        Text="请在文本框内输入图片上的验证码！",
-                        FormBorderStyle=FormBorderStyle.FixedSingle,
-                        MaximizeBox=false,
-                        ShowIcon=false,
+                        Text = "请在文本框内输入图片上的验证码！",
+                        FormBorderStyle = FormBorderStyle.FixedSingle,
+                        MaximizeBox = false,
+                        ShowIcon = false,
                         Height = 300,
-                        Width = 450,                        
+                        Width = 450,
+                        TopLevel = true
                     };
 
                     var macthCaptch = new MatchCaptch();
@@ -354,7 +357,7 @@ namespace ScreenshotBrower.Controls
                     capthForm.Controls.Add(macthCaptch);
                     if (capthForm.ShowDialog() == DialogResult.OK)
                     {
-                        await input_captch.TypeAsync(macthCaptch.InputStr,new PuppeteerSharp.Input.TypeOptions {Delay=500 });//输入验证码
+                        await input_captch.TypeAsync(macthCaptch.InputStr, new PuppeteerSharp.Input.TypeOptions { Delay = 500 });//输入验证码
                         await btnsubmit.ClickAsync();
                         await page.WaitForTimeoutAsync(5000);
 
@@ -364,8 +367,8 @@ namespace ScreenshotBrower.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"输入验证码异常错误",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                
+                MessageBox.Show(ex.Message, "输入验证码异常错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
 

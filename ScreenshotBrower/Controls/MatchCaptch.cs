@@ -28,6 +28,7 @@ namespace ScreenshotBrower.Controls
             this.InputStr = tbx_inputCaptch.Text;
             if(string.IsNullOrEmpty(InputStr))
             {
+                MessageBox.Show("请图形上的输入验证码！");
                 tbx_inputCaptch.Focus();
                 return;
             }
