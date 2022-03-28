@@ -181,7 +181,7 @@ namespace ScreenshotBrower.Controls
                         Width = Screen.PrimaryScreen.WorkingArea.Width,
                         Height = Screen.PrimaryScreen.WorkingArea.Height
                     });
-
+                    
 
                     if (!changeCountry.Contains("请选择") && _CountryModels.Any())
                     {
@@ -234,11 +234,12 @@ namespace ScreenshotBrower.Controls
                     int max = urls.Length;
 
                     var prelist = Properties.Resources.preload.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var maxwidth = Screen.PrimaryScreen.WorkingArea.Width;
                     foreach (var item in urls)
                     {
                         index += 1;
-                        var ht = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
-                        var ft = $"<div style=\"top:0px;font-size:10px;margin-left: 10px\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\">{addText}</span><span style=\"margin-left: 25%;\">{addText}</span></div>";
+                        var ht = $"<div style=\"top:0px;font-size:10px;margin-left:10px;width:{maxwidth}px;\" ><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\"></span><span style=\"margin-left:25%;\">{addText}</span></div>";
+                        var ft = $"<div style=\"top:0px;font-size:10px;margin-left: 10px;width:{maxwidth}px;\"><span style=\"margin-left: 20px;\">{item}</span><span style=\"margin-left: 25%;\"></span><span style=\"margin-left:25%;\">{addText}</span></div>";
 
                         try
                         {
